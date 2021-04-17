@@ -1,0 +1,85 @@
+.concesionario-title p {
+    text-align: center;
+    color: white;
+    border-radius: 4px 4px 0px 0px;
+    background-color: @colorSecundario2;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 40px;
+    margin-bottom: 0px;
+}
+
+.concesionario-map a {
+    display: block;
+    color: #a7a7a7;
+    text-decoration: none;
+    background-image: url("@{imgpath}/maps.jpg");
+    background-size: cover;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 80px;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.concesionario-map a:hover {
+    color: #eaeaea;
+}
+
+.concesionario-map i {
+    font-size: 30px;
+}
+
+.concesionario-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid @colorSecundario2;
+    border-right: 1px solid @colorSecundario2;
+    border-bottom: 1px solid @colorSecundario2;
+    border-radius: 0px 0px 4px 4px;
+    min-height: 135px;
+    padding: 15px;
+}
+
+.concesionario-detail .content-detail {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: baseline;
+    font-size: 13px;
+}
+
+.concesionario-detail .content-detail i {
+    width: 15px;
+}
+
+.concesionario-detail .content-detail p {
+    line-height: 17px;
+    margin-left: 10px;
+}
+
+.concesionario-detail .content-detail:last-child p {
+    margin-bottom: 0;
+}
+
+.loadig {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.loadig p {
+    font-size: 20px;
+}
+
+.loadig i {
+    font-size: 25px;
+    margin-bottom: 8px;
+    animation-name: loading;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}

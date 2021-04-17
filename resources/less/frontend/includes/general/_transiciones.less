@@ -1,0 +1,41 @@
+.fade-down {
+  animation-name: fadeDown;
+  animation-duration: 1.5s;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.modal-open {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+
+  animation-name: modalOpen;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes modalOpen {
+  0% {
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0);
+    display: none;
+  }
+
+  100% {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: block;
+  }
+}

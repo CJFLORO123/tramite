@@ -1,0 +1,373 @@
+.llamar-whas {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.llamar-whas a {
+    background: #2cbd47;
+    color: #fff;
+    font-size: 35px;
+    padding: 6px 15px;
+    border-radius: 50%;
+    transition: box-shadow 0.5s;
+}
+
+.llamar-whas a:hover {
+    box-shadow: 0px 2px 8px black;
+}
+
+.slider {
+    width: 100%;
+    /*background-image: url("@{imgpath}/slider/slider2.jpg");*/
+    background-repeat: no-repeat;
+    background-position: top left;
+    background-size: cover;
+}
+
+.slider .slider-content {
+    width: 100%;
+    padding: 13% 0 11%;
+}
+
+.slider-wrapper {
+    background-color: @colorSecundario1;
+}
+
+.slider-title {
+    color: #f9f9f9;
+    font-size: 52px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.slider-desc {
+    font-size: 18px;
+    font-weight: 400;
+    color: #f9f9f9;
+}
+
+.slider-desc li {
+    line-height: 30px;
+}
+
+.section {
+    margin: 20px 0;
+}
+
+.section .title-section {
+    color: @colorSecundario1;
+    font-size: 36px;
+    padding: 20px 0;
+    font-weight: 400;
+    letter-spacing: -1px;
+}
+
+.section .sub-title-section {
+    color: @colorSecundario1;
+    font-size: 25px;
+    line-height: 80px;
+    font-weight: 400;
+    letter-spacing: -1px;
+}
+
+.caracteristicas {
+    text-align: center;
+    color: @colorSecundario1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0px 15px;
+    height: 162px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.2s;
+}
+
+.caracteristicas:hover {
+    color: white;
+    background-color: @colorSecundario1;
+    transform: scale(1.1, 1.1);
+}
+
+.caracteristicas i {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.caracteristicas p {
+    line-height: 20px;
+    margin: 0;
+}
+
+.video {
+    text-align: center;
+}
+
+.consultar {
+    background-image: url("@{imgpath}/consultar.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.title-background {
+    text-align: center;
+    color: white;
+    font-size: 36px;
+    line-height: 80px;
+    font-weight: 400;
+    letter-spacing: -1px;
+}
+
+.lore img {
+    width: 100%;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabs li {
+    width: 140px;
+    text-align: center;
+    border-top: 1px solid @colorSecundario1;
+    border-left: 1px solid @colorSecundario1;
+}
+
+.tabs li:first-child {
+    border-radius: 4px 0px 0px 0px;
+}
+
+.tabs li:last-child {
+    border-right: 1px solid @colorSecundario1;
+    border-radius: 0px 4px 0px 0px;
+}
+
+.tabs a {
+    color: @colorSecundario1;
+    display: block;
+    padding: 12px;
+    transition: color 0.2s, background-color 0.3s;
+}
+
+.tabs a:hover,
+.tab-active {
+    color: white !important;
+    background-color: @colorSecundario1 !important;
+}
+
+.tabs-content {
+    border: 1px solid @colorSecundario1;
+    border-radius: 4px;
+    padding: 20px 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tabs-icon {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+}
+
+.tabs-icon i {
+    color: gray;
+    font-size: 260px;
+    opacity: 0.1;
+}
+
+.evento {
+    background-image: url("@{imgpath}/eventos/back.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 30px;
+}
+
+.evento-desc {
+    text-align: center;
+}
+
+.evento-desc .evento-title {
+    text-align: center;
+    color: @colorSecundario1;
+    font-size: 36px;
+    line-height: 50px;
+    font-weight: 400;
+}
+
+.evento-desc .evento-coment {
+    font-size: 20px;
+}
+
+.evento-desc a {
+    color: @colorSecundario2;
+}
+
+.evento .evento-video {
+    background-color: black;
+}
+
+.evento iframe {
+    display: block;
+    margin: 0 auto;
+}
+
+.blog {
+    background-image: url("@{imgpath}/blog.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding: 30px;
+    color: #f9f9f9;
+}
+
+.blog .blog-img {
+    width: 100%;
+    border-radius: 4px;
+}
+
+.blog .blog-title {
+    color: @colorSecundario2;
+    font-size: 15px;
+}
+
+.blog .blog-fecha {
+    font-size: 11px;
+}
+
+.marquesina {
+    background-color: @colorSecundario2;
+    color: #fff;
+    text-align: center;
+    padding: 25px 0px;
+}
+
+.marquesina h3 {
+    font-weight: 400;
+}
+
+// CONTENIDO GENERAL
+.section-title {
+    background-color: @colorBase;
+    padding: 30px;
+}
+
+.section-title h1 {
+    font-size: 35px;
+    text-align: center;
+    color: white;
+}
+
+.section-title form {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.section-title form select {
+    background-color: @colorBase;
+    color: white;
+    border: none;
+    border-bottom: 1px solid white;
+    font-size: 15px;
+    outline: none;
+    padding: 10px 15px;
+}
+
+.list-general i {
+    color: @colorSecundario1;
+    margin-right: 10px;
+    font-size: 15px;
+}
+
+.list-general .list-vinieta {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.list-general li > p {
+    margin-left: 25px;
+}
+
+.list-interna {
+    margin-left: 42px;
+}
+
+.modal-inicio {
+    display: none;
+    max-width: 600px;
+    border-radius: 4px;
+}
+
+.btn-modal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #b7b7b7;
+    font-size: 20px;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.comunicado-titulo{
+    background-color: @colorSecundario1;
+    color: white;
+    padding: 15px 10px;
+    font-size: 25px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px 4px 0 0;
+    margin: 0;
+    line-height: 30px;
+}
+
+.comunicado-titulo span{
+    display: block;
+    font-size: 13px;
+    font-weight: 100;
+    line-height: 22px;
+}
+
+.comunicado-content{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed @colorSecundario1;
+}
+
+.comunicado-content:last-child{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.comunicado-content ul{
+    list-style: initial;
+    margin-left: 25px;
+    margin-bottom: 10px;
+}
+
+.comunicado-descripcion{
+    border-bottom: 1px solid @colorSecundario1;
+    border-left: 1px solid @colorSecundario1;
+    border-right: 1px solid @colorSecundario1;
+    border-radius: 0 0 4px 4px;
+    padding: 15px;
+}
+
+.comunicado-img{
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}

@@ -1,0 +1,87 @@
+header {
+  background-color: @colorSecundario2;
+}
+
+.header-home {
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 159, 207, 0.5);
+}
+
+.barra-superior {
+  background-color: white;
+  height: 10px;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: normal;
+  height: 51px;
+}
+
+.logo {
+  width: 170px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 0 0 4px 4px;
+}
+
+.logo img {
+  width: 100%;
+}
+
+.menu-lateral {
+  padding: 0px 20px;
+  display: flex;
+}
+
+.menu-lateral > li {
+  color: white;
+  text-align: center;
+  position: relative;
+  margin: 0 10px;
+  padding: 0 10px;
+  min-width: 120px;
+}
+
+.menu-lateral a i {
+  margin-left: 5px;
+}
+
+.menu-lateral > li > a {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  line-height: 51px;
+  transition: background-color 0.3s;
+}
+
+.menu-lateral li:hover {
+  background-color: rgba(0, 159, 207, 0.5);
+}
+
+.menu-lateral li:hover > .sub-menu {
+  display: block;
+  position: absolute;
+  left: 0px;
+}
+
+.sub-menu {
+  display: none;
+  background-color: @colorSecundario1;
+  text-align: left;
+  border-radius: 0px 0px 4px 4px;
+}
+
+.sub-menu a {
+  color: white;
+  display: block;
+  line-height: 19px;
+  padding: 15px 20px;
+  width: 125px;
+}
