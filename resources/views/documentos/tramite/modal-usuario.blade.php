@@ -36,6 +36,14 @@
                         <form role="form" action="{{ route('usuario.guardar') }}" method="POST" class="form-validate">
                             @csrf
                             <div class="form-body">
+                                @if ($errors->any())
+                                    <ul class="list-group">
+                                        @foreach ($errors->all() as $error)
+                                        <li class="list-group-item list-group-item-danger"><i class="fas fa-chevron-right"></i> {{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">

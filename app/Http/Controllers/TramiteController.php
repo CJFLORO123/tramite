@@ -6,17 +6,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TipoDocumento;
 use App\Models\Documentos;
-use App\Models\Situacion;
+
+
+use App\Http\Requests\EmpresaRequest;
+use App\Http\Requests\RemitenteRequest;
+use App\Http\Requests\UsuarioRequest;
 use App\Models\Periodo;
 use App\Models\Privilegio;
 use App\Models\Controldocumentos;
 
 use App\Models\Tipousuario;
-
-use App\Http\Requests\TramiteRequest;
-
-use App\Http\Requests\UsuarioRequest;
-use App\Models\Privilegios;
 
 use App\Models\Usuario;
 use App\Models\Area;
@@ -325,7 +324,7 @@ class TramiteController extends Controller
         return view('documentos.tramite.modal-remitente');
     }
 
-    public function GuardarSolicitante(Request $request)
+    public function GuardarSolicitante(RemitenteRequest $request)
     {
         
         Remitente::create([
@@ -347,7 +346,7 @@ class TramiteController extends Controller
      return view('documentos.tramite.modal-empresa');
  }
 
- public function GuardarEmpresa(Request $request)
+ public function GuardarEmpresa(EmpresaRequest $request)
  {
      
     Empresa::create([
@@ -372,7 +371,7 @@ class TramiteController extends Controller
      return view('documentos.tramite.modal-usuario', compact('tipos','areas'));
  }
 
- public function GuardarUsuario(Request $request)
+ public function GuardarUsuario(UsuarioRequest $request)
  {
      
     $usuario = Usuario::create([
