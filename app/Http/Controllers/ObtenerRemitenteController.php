@@ -9,16 +9,16 @@ class ObtenerRemitenteController extends Controller
 {
     public function index(Request $request){
 
-        $term = $request->term;	
+        $term = $request->get('term');	
 
-        $querys = Remitente::where('nom_solicitante','like', '%' . $term . '%')->get();
+        $querys = Remitente::where('nom_solicitante','LIKE', '%' . $term . '%')->get();
 
         $data =[];
 
         foreach ($querys as $query){
 
             $data[] = [
-               'solicitante' => $query->nom_solicitante
+               'label' => $query->nom_solicitante
             ];
         }
 

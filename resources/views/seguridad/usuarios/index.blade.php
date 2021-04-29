@@ -9,11 +9,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>Seguridad</span>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('usuarios.index') }}">Usuarios</a>
@@ -38,17 +38,18 @@
                     </div>
                     <div class="portlet-body">
                         
-                   
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <input type="search" id="search" class="form-control" name="search" placeholder="Buscar Usuarios">
-                                    <div class="input-group-btn">
-                                    {{ $usuarios->links('vendor.pagination.default-back', ['elements' => $usuarios]) }}
+                    <form role="form">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        <input type="search" name="search" class="form-control" placeholder="Buscar Usuarios" autocomplete="off" autofocus>
+                                        <div class="input-group-btn">
+                                        {{ $usuarios->links('vendor.pagination.default-back', ['elements' => $usuarios]) }}
+                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
 
                         <div class="table-border">
                             <table class="table table-striped table-bordered table-hover table-checkable order-column">
@@ -67,12 +68,12 @@
                                         <td>{{ $loop->iteration + $usuarios->firstItem() - 1 }}</td>
                                         <td> {{ $usuario->apellidos }}, {{ $usuario->nombres }}</td>
                                         <td>{{ $usuario->nickname }}</td>
-                                        <td>{{ $usuario->tipousuario->descripcion }}</td>
+                                        <td>{{ $usuario->descripcion }}</td>
                                         <td>
                                             <form action="{{ route('usuarios.destroy', $usuario->id) }}" class="form-destroy" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <div class="btn-group btn-group">
+                                                <div class="btn-group btn-group-sm">
                                                     <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-primary tooltips" data-container="body" data-placement="bottom" data-original-title="Editar"><i class="fa fa-pencil"></i></a>
                                                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                                         <i class="fa fa-angle-down"></i>

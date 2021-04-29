@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Documentos extends Model
 {
@@ -31,5 +32,12 @@ class Documentos extends Model
 
     public function empresa(){
         return $this->belongsTo(Empresa::class, 'empresa_id', 'id');
+    }
+
+    public function getGetFechaAttribute(){
+        $fecha = explode('-', $this->fecha_recepcion);
+        $fecha = array_reverse($fecha);
+
+        return implode('/', $fecha);
     }
 }

@@ -9,11 +9,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>Organización</span>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('area.index') }}">Areas</a>
@@ -28,7 +28,7 @@
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="icon-wrench font-blue-madison"></i>
+                        <i class="icon-speech"></i>
                             <span class="caption-subject bold uppercase font-blue-madison"> LISTADO DE AREAS</span>
                         </div>
                         <div class="actions">
@@ -37,23 +37,25 @@
                         </div>
                     </div>
                     <div class="portlet-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <input type="search" id="search" class="form-control" name="search" placeholder="Buscar Usuarios">
-                                    <div class="input-group-btn">
-                                    {{ $areas->links('vendor.pagination.default-back', ['elements' => $areas]) }}
+                    <form role="form">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        <input type="search" name="search" class="form-control" placeholder="Buscar Areas" autocomplete="off" autofocus>
+                                        <div class="input-group-btn">
+                                        {{ $areas->links('vendor.pagination.default-back', ['elements' => $areas]) }}
+                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
 
                         <div class="table-border">
                             <table class="table table-striped table-bordered table-hover table-checkable order-column">
                                 <thead>
                                     <tr>
                                         <th> # </th>
-                                        <th> Tipo Documento </th>
+                                        <th> Nombre De Areas </th>
                                         <th> Operaciones </th>
                                     </tr>
                                 </thead>

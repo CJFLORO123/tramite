@@ -9,11 +9,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>Organización</span>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('tipo-documentos.index') }}">Tipo Documentos</a>
@@ -28,7 +28,7 @@
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="icon-wrench font-blue-madison"></i>
+                        <i class="icon-folder-alt"></i>
                             <span class="caption-subject bold uppercase font-blue-madison"> LISTADO DE TIPOS DE DOCUMENTOS</span>
                         </div>
                         <div class="actions">
@@ -37,19 +37,18 @@
                         </div>
                     </div>
                     <div class="portlet-body">
-                        
-                   
-                        <div class="row">
+                       <form role="form">
+                          <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <input type="search" id="search" class="form-control" name="search" placeholder="Buscar Usuarios">
+                                    <input type="search" id="search" class="form-control" name="search" placeholder="Buscar Tipo Documento">
                                     <div class="input-group-btn">
                                     {{ $tipodocumentos->links('vendor.pagination.default-back', ['elements' => $tipodocumentos]) }}
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        </form>
                         <div class="table-border">
                             <table class="table table-striped table-bordered table-hover table-checkable order-column">
                                 <thead>

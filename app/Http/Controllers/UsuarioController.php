@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use Illuminate\Http\Request;
+
+use App\Http\Requests\UsuarioRequest;
 use App\Models\Usuario;
 use App\Models\TipoUsuario;
 use App\Models\Privilegio;
+
+use Illuminate\Support\Facades\DB;
 
 class UsuarioController extends Controller
 {
@@ -19,13 +23,19 @@ class UsuarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $usuarios = Usuario::orderBy('apellidos')
-            ->orderBy('nombres')
-            ->simplePaginate(5);
+        $buscarpor=$request->get('search');
 
-        return view('seguridad.usuarios.index', compact('usuarios'));
+        $usuarios = DB::table('usuario')
+           ->select('usuario.id as id','usuario.nombres','usuario.apellidos','usuario.nickname','tipo_usuario.descripcion')
+           ->join('tipo_usuario','tipo_usuario.id','=','usuario.tipoUsuario_id')
+           ->where('nombres','LIKE','%' .$buscarpor . '%')
+           ->orderBy('id','desc')
+           ->simplePaginate(10);
+
+        return view('seguridad.usuarios.index', ['usuarios'=> $usuarios,'buscarpor' => $buscarpor]);    
+       
     }
 
     /**
@@ -50,7 +60,7 @@ class UsuarioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UsuarioRequest $request)
     {
         $usuario = Usuario::create([
             'nombres'   => $request->nombres,
@@ -75,46 +85,57 @@ class UsuarioController extends Controller
     return redirect()->route('usuarios.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
-        //
+        $usuario = Usuario::where('id', $id)
+            ->first();
+
+        $areas = Area::orderBy('nombre_area')
+            ->get();
+
+        $tipos = Tipousuario::orderBy('descripcion')
+            ->get();
+
+        return view('seguridad.usuarios.editar', compact('usuario', 'tipos','areas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function update(Request $request, $id)
     {
-        //
+        Usuario::find($id)
+            ->update([
+                'nombres'   => $request->nombres,
+                'apellidos' => $request->apellidos,
+                'correo'    => $request->correo,
+                'area_id'    => $request->area_id,
+                'tipoUsuario_id' => $request->tipoUsuario_id
+            ]);
+       
+            Privilegio::where('usuario_id', $id)->delete();
+
+            $tipos = Tipousuario::where('id', $request->tipoUsuario_id)
+                ->first();
+    
+            $accesos = explode(',', $tipos->accesos);
+    
+            foreach($accesos as $acceso){
+                Privilegio::create([
+                    'usuario_id' => $id,
+                    'menu_id' => $acceso 
+                ]);
+            }
+            
+            return redirect()->route('usuarios.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         //

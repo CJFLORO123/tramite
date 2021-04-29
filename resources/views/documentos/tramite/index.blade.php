@@ -117,8 +117,8 @@
                                     <td>
                                         <form action="#" method="#">
                                               <div class="btn-group btn-group-sm btn-group-solid">
-                                                   <a type="button" href="{{ route('documentos.show', $proc->documento) }}"  class="btn btn-primary" title="Detalle del Documento"><i class="fa fa-bars"></i></a>
-                                                   <a href="#" class="btn btn-danger" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                   <a type="button" href="{{ route('documentos.show', $proc->id) }}"  class="btn btn-primary" title="Detalle del Documento"><i class="fa fa-bars"></i></a>
+                                                   <a href="{{ route('documentos.edit', $proc->id) }}" class="btn btn-danger" title="Editar"><i class="fa fa-pencil"></i></a>
                                              </div>
                                         </form>
                                     </td>

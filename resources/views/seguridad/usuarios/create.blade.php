@@ -9,11 +9,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>Seguridad</span>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('usuarios.index') }}">Usuarios</a>

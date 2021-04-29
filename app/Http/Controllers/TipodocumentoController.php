@@ -5,69 +5,71 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TipoDocumento;
 
+use App\Http\Requests\TipoDocumentoRequest;
+use Illuminate\Support\Facades\DB;
+use App\Models\Controldocumentos;
 
 class TipodocumentoController extends Controller
 {
     public function __construct(Request $request){
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    
+    public function index(Request $request)
     {
-        $tipodocumentos = TipoDocumento::orderBy('nombre_tipoDocumento')
-            ->orderBy('nombre_tipoDocumento')
-            ->simplePaginate(11);
+        $buscarpor=$request->get('search');
 
-        return view('documentos.tipo-documento.index', compact('tipodocumentos'));
+        $tipodocumentos = DB::table('tipodocumento')
+                        ->select('tipodocumento.id as id','tipodocumento.nombre_tipoDocumento')
+                        ->where('nombre_tipoDocumento','LIKE','%' .$buscarpor . '%')
+                        ->orderBy('id','desc')
+                        ->simplePaginate(10);  
+                        
+        return view('documentos.tipo-documento.index', ['tipodocumentos' => $tipodocumentos,'buscarpor' => $buscarpor]);
+                     
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
         return view('documentos.tipo-documento.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    
+    public function store(TipoDocumentoRequest $request)
     {
-        TipoDocumento::create([
+        $tipo = TipoDocumento::create([
             'nombre_tipoDocumento' => $request->nombre_tipoDocumento,
+        ]);
+   // dd($tipo->id); 
+
+        $tipoDocumento_id=$tipo->id;
+
+         Controldocumentos::create([
+            'num_documentos' => 0,
+            'tipo_tramite' => 'RECIBIDOS',
+            'tipoDocumento_id' => $tipoDocumento_id,
+            'fecha_registro' => date("Y-m-d"),
+        ]);
+
+        Controldocumentos::create([
+            'num_documentos' => 0,
+            'tipo_tramite' => 'EMITIDOS',
+            'tipoDocumento_id' => $tipoDocumento_id,
+            'fecha_registro' => date("Y-m-d"),
         ]);
 
         return redirect()->route('tipo-documentos.index');
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
         $tipodocumento = TipoDocumento::where('id', $id)
@@ -76,13 +78,7 @@ class TipodocumentoController extends Controller
         return view('documentos.tipo-documento.editar',compact('tipodocumento'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
         TipoDocumento::find($id)
@@ -91,12 +87,7 @@ class TipodocumentoController extends Controller
             return redirect()->route('tipo-documentos.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         TipoDocumento::where('id', $id)->delete();

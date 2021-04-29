@@ -9,14 +9,14 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Documentos</span>
-                    <i class="fa fa-circle"></i>
+                    <span>Organización</span>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a href="{{ route('area.index') }}">Tipo Documentos</a>
+                    <a href="{{ route('area.index') }}">Areas</a>
                 </li>
             </ul>
         </div>
@@ -28,7 +28,7 @@
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="icon-wrench font-blue-madison"></i>
+                        <i class="icon-speech"></i>
                             <span class="caption-subject bold uppercase font-blue-madison"> EDITAR AREAS</span>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label" for="nombre_area">Nombre De Tipo Documentos</label>
+                                            <label class="control-label" for="nombre_area">Nombre De Area</label>
                                             <input type="text" class="form-control inputLetras" id="nombre_area" name="nombre_area" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $area->nombre_area }}" required>
                                         </div>
                                     </div>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="form-actions right">
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>
-                                <a href="{{ route('tipo-usuario.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
+                                <a href="{{ route('area.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
                             </div>
                         </form>
                     </div>

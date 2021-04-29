@@ -9,11 +9,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>Organización</span>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('empresa.index') }}">Empresas</a>
@@ -28,7 +28,7 @@
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="icon-wrench font-blue-madison"></i>
+                        <i class="icon-speech"></i>
                             <span class="caption-subject bold uppercase font-blue-madison"> EDITAR EMPRESA</span>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="form-actions right">
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>
-                                <a href="{{ route('tipo-usuario.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
+                                <a href="{{ route('empresa.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
                             </div>
                         </form>
                     </div>

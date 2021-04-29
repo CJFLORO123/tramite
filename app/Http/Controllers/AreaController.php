@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AreaResquest;
+
 use App\Models\Area;
+use Illuminate\Support\Facades\DB;
 
 class AreaController extends Controller
 {
@@ -12,13 +15,17 @@ class AreaController extends Controller
         $this->middleware('auth');
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $areas = Area::orderBy('nombre_area')
-            ->orderBy('nombre_area')
-            ->simplePaginate(11);
+        $buscarpor=$request->get('search');
 
-        return view('organizacion.areas.index', compact('areas'));
+        $areas = DB::table('area')
+            ->select('area.id as id','area.nombre_area')
+            ->where('nombre_area','LIKE','%' .$buscarpor . '%')
+            ->orderBy('id','desc')
+            ->simplePaginate(10);
+
+        return view('organizacion.areas.index', ['areas'=> $areas,'buscarpor' => $buscarpor]);
     }
 
    
@@ -28,7 +35,7 @@ class AreaController extends Controller
     }
 
   
-    public function store(Request $request)
+    public function store(AreaResquest $request)
     {
         area::create([
             'nombre_area' => $request->nombre_area,

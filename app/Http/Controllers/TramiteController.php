@@ -8,9 +8,12 @@ use App\Models\TipoDocumento;
 use App\Models\Documentos;
 use App\Models\Situacion;
 use App\Models\Periodo;
+use App\Models\Privilegio;
 use App\Models\Controldocumentos;
-use App\Models\Solicitante;
+
 use App\Models\Tipousuario;
+
+use App\Http\Requests\TramiteRequest;
 
 use App\Http\Requests\UsuarioRequest;
 use App\Models\Privilegios;
@@ -18,6 +21,7 @@ use App\Models\Privilegios;
 use App\Models\Usuario;
 use App\Models\Area;
 use App\Models\Empresa;
+use App\Models\Remitente;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -27,17 +31,13 @@ class TramiteController extends Controller
     public function __construct(Request $request){
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index(Request $request)
     {
         $buscarpor=$request->get('search');
                
         $proceso = DB::table('documentos')
-             ->select('documentos.id as documento','documentos.num_recepcion as num_recepcion','periodo.anio as indice','tipodocumento.nombre_tipoDocumento AS nombre_tipoDocumento', 'situacion.id as situacion', 'documentos.asunto as asunto','documentos.num_documento as num_documento','situacion.desc_situacion',
+             ->select('documentos.id as id','documentos.num_recepcion as num_recepcion','periodo.anio as indice','tipodocumento.nombre_tipoDocumento AS nombre_tipoDocumento', 'situacion.id as situacion', 'documentos.asunto as asunto','documentos.num_documento as num_documento','situacion.desc_situacion',
               DB::raw('CASE WHEN solicitante.nom_solicitante="noespecificada" THEN "-" ELSE solicitante.nom_solicitante END AS nom_solicitante'),
               DB::raw('date_format(documentos.fecha_recepcion, "%d/%m/%Y") as fecha_recepcion'),
               DB::raw("time_format(documentos.hora_recepcion, '%h:%i %p') as  hora_recepcion"),
@@ -48,17 +48,13 @@ class TramiteController extends Controller
              ->join('situacion','documentos.id', '=', 'situacion.documentos_id')
              ->whereRaw('(situacion.usuario_id='.Auth::id().' and situacion.desc_situacion="RECIBIDO")')
              ->where('num_documento','LIKE','%' .$buscarpor . '%')
-             ->orderBy('documento','desc')
+             ->orderBy('id','desc')
              ->simplePaginate(20);
              //dd( $documentos);
         return view('documentos.tramite.index',['proceso' => $proceso,'buscarpor' => $buscarpor]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
         $now = Carbon::now();
@@ -83,12 +79,7 @@ class TramiteController extends Controller
         return view('documentos.tramite.create',compact('tipodocumentos', 'areas','now', 'numExpediente','periodo','tiposUsuarios'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
         $tipo_tramite = $request->tipo_tramite;
@@ -248,46 +239,169 @@ class TramiteController extends Controller
              return redirect()->route('documentos.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
-        //
+        $id_documento = DB::select("SELECT d.id,d.num_recepcion,p.anio, CASE WHEN so.nom_solicitante IS NULL THEN '--' ELSE so.nom_solicitante END AS nom_solicitante, CASE WHEN so.dni_ruc IS NULL THEN '-- --' ELSE so.dni_ruc END AS dni_ruc, CASE WHEN so.cargo IS NULL THEN '--' ELSE so.cargo END AS cargo,
+        CASE WHEN so.cor_solicitante IS NULL THEN '-- --' ELSE so.cor_solicitante END AS cor_solicitante,td.nombre_tipoDocumento,d.num_documento,DATE_FORMAT(d.fecha_recepcion, '%d/%m/%Y') AS fecha_recepcion,TIME_FORMAT(d.hora_recepcion, '%h:%i %p') AS hora_recepcion,d.asunto, d.detalle,d.adj_documento FROM documentos d inner join periodo p on d.periodo_id=p.id LEFT JOIN solicitante so on d.solicitante_id=so.id  INNER JOIN tipodocumento td on td.id=d.tipoDocumento_id where d.id=".$id);
+
+        return view('detalle-documento/index', compact('id_documento'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id)
     {
-        //
+
+       $now = Carbon::now();
+
+        $areas = Area::orderBy('nombre_area')
+        ->get();
+
+        $solicitante = Remitente::orderBy('nom_solicitante')
+        ->get();
+
+        $periodo = periodo::orderBy('anio')
+        ->get();
+
+        $tipodocumentos = TipoDocumento::orderBy('nombre_tipoDocumento')
+        ->get();
+
+        $tiposUsuarios = Tipousuario::orderBy('descripcion')
+        ->get();
+
+        $sql = "SELECT MAX(d.num_recepcion) as num_recepcion from documentos d INNER JOIN periodo p on p.id=d.periodo_id WHERE p.estado";
+        $r = DB::select($sql);
+
+        $numExpediente=  $r[0]->num_recepcion + 1;    
+
+        $documentos = Documentos::where('id', $id)
+            ->first();
+
+     return view('documentos.tramite.edit', compact('documentos', 'numExpediente','periodo','now','areas','tipodocumentos','tiposUsuarios','solicitante'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
-        //
+
+        $solicitante_id = DB::table('solicitante')
+                ->where('nom_solicitante', $request->solicitante)
+                ->select('id')
+                ->get();
+
+   $tidocumento=DB::select("SELECT id FROM control_documentos
+   WHERE tipoDocumento_id =$request->tipoDocumento_id and tipo_tramite='recibidos'");
+
+   // dd($tidocumento[0]->id);
+        
+        $fecha = Carbon::createFromFormat('d/m/Y',$request->fecha_recepcion)->format('Y-m-d');
+        $time = Carbon::parse($request->hora_recepcion)->format('H:i:s');
+        //dd($solicitante_id);
+        //dd($fecha);
+        Documentos::find($id)
+        ->update([
+            'tipoDocumento_id' => $request->tipoDocumento_id,
+            'num_documento' => $request->num_documento,
+            'fecha_recepcion' => $fecha,
+            'hora_recepcion'   => $time,
+            'asunto' => $request->asunto,
+            'detalle' => $request->detalle,
+            'solicitante_id' => $solicitante_id[0]->id,
+            'usuario_id' => Auth::id(),   
+        ]);
+
+         Controldocumentos::where('id', $tidocumento[0]->id)
+                  ->update([
+                      'fecha_registro' => $fecha,
+                   ]);
+   
+        return redirect()->route('documentos.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+  // Modal solicitante //
+    public function CrearSolucitante()
+    {
+        return view('documentos.tramite.modal-remitente');
+    }
+
+    public function GuardarSolicitante(Request $request)
+    {
+        
+        Remitente::create([
+            'nom_solicitante' => $request->nom_solicitante,
+            'cargo' => $request->cargo,
+            'dni_ruc' => $request->dni_ruc,
+            'cor_solicitante' => $request->cor_solicitante,
+        ]);
+
+        return redirect()->route('documentos.create');
+
+    } 
+ // fin Modal solicitante //
+
+
+ // Modal empresa //
+ public function CrearEmpresa()
+ {
+     return view('documentos.tramite.modal-empresa');
+ }
+
+ public function GuardarEmpresa(Request $request)
+ {
+     
+    Empresa::create([
+        'nombre_empresa' => $request->nombre_empresa,
+    ]);
+
+    
+     return redirect()->route('documentos.create');
+
+ } 
+// fin Modal solicitante //
+
+ // Modal Usuario //
+ public function CrearUsuario()
+ {
+    $tipos = Tipousuario::orderBy('descripcion')
+    ->get();
+
+   $areas = Area::orderBy('nombre_area')
+    ->get();
+
+     return view('documentos.tramite.modal-usuario', compact('tipos','areas'));
+ }
+
+ public function GuardarUsuario(Request $request)
+ {
+     
+    $usuario = Usuario::create([
+        'nombres'   => $request->nombres,
+        'apellidos' => $request->apellidos,
+        'nickname'  => $request->nickname,
+        'password'  => $request->password,
+        'tipoUsuario_id' => $request->tipoUsuario_id,
+        'area_id' => $request->area_id
+    ]);
+
+$tipos = Tipousuario::where('id', $request->tipoUsuario_id)
+    ->first();
+
+$accesos = explode(',', $tipos->accesos);
+
+foreach($accesos as $acceso){
+    Privilegio::create([
+        'usuario_id' => $usuario->id,
+        'menu_id' => $acceso 
+    ]);
+}
+    
+     return redirect()->route('documentos.create');
+
+ } 
+// fin Modal solicitante //
+
+  
     public function destroy($id)
     {
         //

@@ -9,11 +9,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Organición</span>
-                    <i class="fa fa-circle"></i>
+                    <span>Organización</span>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('remitente.index') }}">Remitente</a>
@@ -21,14 +21,14 @@
             </ul>
         </div>
         
-        <h1 class="page-title"> Remitente <small>Registrados en el sistema</small></h1>
+        <h1 class="page-title"> Remitentes <small>Registrados en el sistema</small></h1>
 
         <div class="row">
             <div class="col-md-12">
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="icon-wrench font-blue-madison"></i>
+                        <i class="icon-speech"></i>
                             <span class="caption-subject bold uppercase font-blue-madison"> AGREGAR REMITENTE</span>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label" for="nom_solicitante">Nombre y Apellidos</label>
-                                            <input type="text" class="form-control inputLetras" id="nomnre" name="nom_solicitante" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input type="text" class="form-control inputValida" id="nom_solicitante" name="nom_solicitante" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -64,20 +64,20 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label" for="dni_ruc">DNI</label>
-                                                <input type="text" class="form-control inputLetras" id="dni_ruc" name="dni_ruc" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                               <input type="text" class="form-control inputNumero" id="dni_ruc" name="dni_ruc" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label" for="cor_solicitante">Correo Electronico</label>
-                                                <input type="text" class="form-control inputLetras" id="cor_solicitante" name="cor_solicitante" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                                <input type="text" class="form-control" id="cor_solicitante" name="cor_solicitante" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
                                         </div>
                                     </div>
                                 
                             </div>
                             <div class="form-actions right">
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>
-                                <a href="{{ route('tipo-usuario.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
+                                <a href="{{ route('remitente.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
                             </div>
                         </form>
                     </div>

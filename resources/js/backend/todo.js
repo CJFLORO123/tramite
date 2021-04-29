@@ -76,7 +76,7 @@ if (select) {
 }
 
 // DATE PICKER
-const date = document.querySelector(".input-date");
+/*const date = document.querySelector(".input-date");
 
 if (date) {
     $(".input-date").datepicker({
@@ -86,7 +86,7 @@ if (date) {
         todayHighlight: true
     });
 }
-
+*/
 // MOVER MENU
 const menuMovible = document.getElementById("sortable");
 
@@ -162,7 +162,7 @@ if (prob) {
                 idArea: idArea
             }
         }).then(res => {
-            console.log(res)
+           // console.log(res)
             const fragment = document.createDocumentFragment();
 
             const option = document.createElement("option");
@@ -216,11 +216,11 @@ $("#solicitante").autocomplete({
     }
 });
 
-/*
+
 $("#empresa").autocomplete({
     source: function (request, response) {
         $.ajax({
-            url: "/empresas",
+            url: "/empresa",
             dataType: "json",
             data: {
                 term: request.term
@@ -233,31 +233,63 @@ $("#empresa").autocomplete({
     },
     minLength: 2,
 });
-*/
+
 
 $("#exportar_pdf").click(function (e) {
-    //console.log(e);
+    console.log(e);
     e.preventDefault();
 
     var fecha_inicio = $("#fecha_inicio");
     var fecha_fin = $("#fecha_fin");
-    var tipo = $("#tipo_tramite");
+    var tipo = $("#tipoDocumento_id");
+    var tipo_tramite = $("#tipo_tramite");
 
     if (fecha_inicio.val() == "") {
-        fecha_fin.focus(); return false;
+        fecha_inicio.focus(); return false;
     }
     if (fecha_fin.val() == "") {
         fecha_fin.focus(); return false;
+    }
+
+    if (tipo_tramite.val() == "") {
+        tipo_tramite.focus(); return false;
     }
 
     if (tipo.val() == "") {
         tipo.focus(); return false;
     }
 
+
     fecha_inicio = fecha_inicio.val().split("/").reverse().join("-");
     fecha_fin = fecha_fin.val().split("/").reverse().join("-");
 
-    window.location = "/reporte/imprimir/" + fecha_inicio + "/" + fecha_fin + "/" + tipo.val();
+    window.location = "/reporte/imprimir/" + fecha_inicio + "/" + fecha_fin + "/" + tipo_tramite.val() + "/" + tipo.val();
+});
+
+
+$("#exportar_tipo").click(function (e) {
+    console.log(e);
+    e.preventDefault();
+
+    var fecha_inicio = $("#fecha_inicio");
+    var fecha_fin = $("#fecha_fin");
+    var tipo_tramite = $("#tipo_tramite");
+
+    if (fecha_inicio.val() == "") {
+        fecha_inicio.focus(); return false;
+    }
+    if (fecha_fin.val() == "") {
+        fecha_fin.focus(); return false;
+    }
+
+    if (tipo_tramite.val() == "") {
+        tipo_tramite.focus(); return false;
+    }
+
+    fecha_inicio = fecha_inicio.val().split("/").reverse().join("-");
+    fecha_fin = fecha_fin.val().split("/").reverse().join("-");
+
+    window.location = "/reporte/imprimir-tipo-tramite/" + fecha_inicio + "/" + fecha_fin + "/" + tipo_tramite.val();
 });
 
 
@@ -276,42 +308,39 @@ function validarTextoEntrada(input, patron) {
     }
     
 
-/*
-const tipo = document.querySelector(".inputLetras");
+const remicre = document.querySelector(".inputValida");
 
-tipo.addEventListener("input", function() {
-   
-    validarTextoEntrada(this, "[a-z-ñ ]") 
-
-});
-
-
-const remicre = document.querySelector(".inputLetrascre");
-
+if(remicre){
 remicre.addEventListener("input", function() {
    
     validarTextoEntrada(this, "[a-z-ñ ]") 
 
 });
+}
+
+const nombre = document.querySelector(".inputLetras");
+if(nombre){
+nombre.addEventListener("input", function() {
+   
+    validarTextoEntrada(this, "[a-z-ñ ]") 
+
+});
+}
+
+const numero = document.querySelector(".inputNumero");
+
+if(numero){
+    
+numero.addEventListener("input", function() {
+   
+    validarTextoEntrada(this, "[0-9]") 
+
+});
+}  // 
+
     
 
-    const apelli = document.querySelector(".inputValida");
-
-    apelli.addEventListener("input", function() {
-       
-        validarTextoEntrada(this, "[a-z-ñ ]") 
-    
-    });
-
-    /*
-    const numero  = document.querySelector(".validarNumero");
-
-    numero.addEventListener("input", function() {
-       
-        validarTextoEntrada(this, "[0-9]")
-    
-    });*/
-
+ 
     // FIN VALIDACIONES DE LETRAS Y NUMEROS //
 
 /// modal de solicitante en agregar documentos internos o externos ///
@@ -329,7 +358,7 @@ remicre.addEventListener("input", function() {
              success: function (response) {
                  console.log(response)
                  //$("#alertError").hide();
-                 $('#modalCreateSolicitante').modal('hide')
+                 $('#modal-remitente').modal('hide')
                  LimpiarFormulario();
 
              },
@@ -488,6 +517,7 @@ if (prueba) {
     prueba.addEventListener("change", e => {
         
         const tipoDocumento_id = e.target.value;
+
         const tipo_tramite = tramite.value;
 
         axios({
@@ -511,3 +541,10 @@ if (prueba) {
        });
 
     }  
+
+    $('.datepicker').datepicker({
+        orientation: 'bottom left',
+        todayHighlight: true,
+        autoclose: true,
+        
+    })

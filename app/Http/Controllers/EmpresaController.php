@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use Illuminate\Support\Facades\DB;
+
+use App\Http\Requests\EmpresaRequest;
 
 class EmpresaController extends Controller
 {
@@ -16,13 +19,18 @@ class EmpresaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $empresas = Empresa::orderBy('nombre_empresa')
-            ->orderBy('nombre_empresa')
-            ->simplePaginate(11);
+        $buscarpor=$request->get('search');
 
-        return view('organizacion.empresa.index', compact('empresas'));
+        $empresas = DB::table('empresa')
+                    ->select('empresa.id as id','empresa.nombre_empresa')
+                    ->where('nombre_empresa','LIKE','%' .$buscarpor . '%')
+                   ->orderBy('id','desc')
+                   ->simplePaginate(10);
+                   
+        return view('organizacion.empresa.index', ['empresas' => $empresas,'buscarpor' => $buscarpor]);
+     
     }
 
     /**
@@ -41,7 +49,7 @@ class EmpresaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmpresaRequest $request)
     {
         Empresa::create([
             'nombre_empresa' => $request->nombre_empresa,

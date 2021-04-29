@@ -73,7 +73,7 @@
                                             
                         <form role="form">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-9">
                                     <div class="input-group">
                                         <input type="search" name="search" class="form-control" placeholder="Buscar Documentos Emitidos" autocomplete="off" autofocus>
                                         <div class="input-group-btn">
@@ -117,8 +117,8 @@
                                         <form action="#" method="#">
                                            
                                         <div class="btn-group btn-group-sm btn-group-solid">
-                                        <a href="#" class="btn btn-primary" title="Detalle del Documento"><i class="fa fa-bars"></i></a>
-                                        <a href="#" class="btn btn-danger" title="Editar"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('emitidos.show', $emit->documento) }}" class="btn btn-primary" title="Detalle del Documento"><i class="fa fa-bars"></i></a>
+                                        <a href="{{ route('emitidos.edit', $emit->documento) }}" class="btn btn-danger" title="Editar"><i class="fa fa-pencil"></i></a>
                                         </div>
                                         </form>
                                     </td>

@@ -9,6 +9,7 @@ use App\Models\Usuario;
 use App\Models\TipoDocumento;
 use App\Models\Area;
 use App\Models\Empresa;
+use App\Models\Controldocumentos;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +50,7 @@ class EmitidosController extends Controller
     
     public function create()
     {
-        //
+        
     }
 
    
@@ -61,18 +62,81 @@ class EmitidosController extends Controller
    
     public function show($id)
     {
-        //
+        $id_emitidos = DB::select("SELECT d.id,d.num_recepcion,p.anio,td.nombre_tipoDocumento,d.num_documento,DATE_FORMAT(d.fecha_recepcion, '%d/%m/%Y') AS fecha_recepcion,TIME_FORMAT(d.hora_recepcion, '%h:%i %p') AS hora_recepcion,d.asunto, d.detalle,d.adj_documento, u.nombres,u.apellidos, a.nombre_area, ep.nombre_empresa 
+       FROM documentos d 
+       inner join periodo p on d.periodo_id=p.id 
+       INNER JOIN tipodocumento td on td.id=d.tipoDocumento_id
+       INNER JOIN usuario u on u.id=d.usuario_id
+       INNER JOIN area a on a.id=u.area_id
+       INNER JOIN empresa ep on ep.id=d.empresa_id
+       where d.id=".$id);
+
+        return view('documentos.emitidos.detalle-emitidos', compact('id_emitidos'));
     }
 
   
     public function edit($id)
     {
-        //
+        $now = Carbon::now();
+
+        $areas = Area::orderBy('nombre_area')
+        ->get();
+
+        $usuarios = Usuario::orderBy('nombres')
+        ->get();
+
+        $periodo = periodo::orderBy('anio')
+        ->get();
+
+        $tipodocumentos = TipoDocumento::orderBy('nombre_tipoDocumento')
+        ->get();
+
+        $tiposUsuarios = Tipousuario::orderBy('descripcion')
+        ->get();
+
+        $sql = "SELECT MAX(d.num_recepcion) as num_recepcion from documentos d INNER JOIN periodo p on p.id=d.periodo_id WHERE p.estado";
+        $r = DB::select($sql);
+
+        $numExpediente=  $r[0]->num_recepcion + 1;    
+
+        $emitidos = Documentos::where('id', $id)
+            ->first();
+
+        return view('documentos.emitidos.edit', compact('emitidos', 'numExpediente','periodo','now','areas','tipodocumentos','tiposUsuarios','usuarios'));
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $empresa_id = DB::table('empresa')
+                ->where('nombre_empresa', $request->empresa)
+                ->select('id')
+                ->get();
+        
+        $tidocumento=DB::select("SELECT id FROM control_documentos
+                     WHERE tipoDocumento_id =$request->tipoDocumento_id and tipo_tramite='emitidos'");
+        
+        $fecha = Carbon::createFromFormat('d/m/Y',$request->fecha_recepcion)->format('Y-m-d');
+        $time = Carbon::parse($request->hora_recepcion)->format('H:i:s');
+       
+        Documentos::find($id)
+        ->update([
+            'tipoDocumento_id' => $request->tipoDocumento_id,
+            'num_documento'    => $request->num_documento,
+            'fecha_recepcion'  => $fecha,
+            'hora_recepcion'   => $time,
+            'asunto' => $request->asunto,
+            'detalle' => $request->detalle,
+            'empresa_id' => $empresa_id[0]->id,
+            'usuario_id' => $request->usuario_id,
+            
+        ]);
+
+        Controldocumentos::where('id', $tidocumento[0]->id)
+                  ->update([
+                      'fecha_registro' => $fecha,
+                   ]);
+
+        return redirect()->route('emitidos.index');
     }
 
   

@@ -1,6 +1,6 @@
 @extends('layouts.template')
 
-@section('titlePage', 'Areas | AFOSECAT San Martín')
+@section('titlePage', 'Empresas | AFOSECAT San Martín')
 
 @section('content')
 <div class="page-content-wrapper">
@@ -9,11 +9,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Organición</span>
-                    <i class="fa fa-circle"></i>
+                    <span>Organización</span>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('empresa.index') }}">Empresa</a>
@@ -28,8 +28,8 @@
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="icon-wrench font-blue-madison"></i>
-                            <span class="caption-subject bold uppercase font-blue-madison"> AGREGAR AREAS</span>
+                        <i class="icon-speech"></i>
+                            <span class="caption-subject bold uppercase font-blue-madison"> AGREGAR EMPRESAS</span>
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -56,7 +56,7 @@
                             </div>
                             <div class="form-actions right">
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>
-                                <a href="{{ route('tipo-usuario.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
+                                <a href="{{ route('empresa.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
                             </div>
                         </form>
                     </div>

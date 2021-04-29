@@ -9,11 +9,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>Organización</span>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('control-documentos.index') }}">Control De Documentos</a>
@@ -28,7 +28,7 @@
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="icon-wrench font-blue-madison"></i>
+                        <i class="icon-speech"></i>
                             <span class="caption-subject bold uppercase font-blue-madison"> LISTADO DE Control De Documentos</span>
                         </div>
                         
@@ -51,22 +51,20 @@
                             <table class="table table-striped table-bordered table-hover table-checkable order-column">
                                 <thead>
                                     <tr>
-                                       
-                                        <th> N° Registros </th>
                                         <th>Tipo Trámite </th>
-                                        <th> Fecha Registro  </th>
+                                        <th> N° De Registro </th>
                                         <th> Tipo Documento </th>
+                                        <th>Fecha Registro </th>
                                         <th> Operaciones </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($Controldocumentos as $Controldocumento)
                                     <tr>
-                                        
-                                        <td>{{ $Controldocumento->num_documentos }}</td>
                                         <td>{{ $Controldocumento->tipo_tramite }}</td>
-                                        <td>{{ $Controldocumento->fecha_registro }}</td>
+                                        <td>{{ $Controldocumento->num_documentos }}</td>
                                         <td>{{ $Controldocumento->nombre_tipoDocumento }}</td>
+                                        <td>{{ $Controldocumento->fecha_registro }}</td>
                                         <td>
                                         <form action="{{ route('control-documentos.destroy', $Controldocumento->id) }}" method="POST">
                                                 @csrf

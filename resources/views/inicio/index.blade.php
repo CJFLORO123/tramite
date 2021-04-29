@@ -27,9 +27,23 @@
                         </div>
                     </div>
                     <div class="portlet-body">
-                        
-                      
-                        
+                        <a href="{{ route('documentos.index') }}" class="icon-btn">
+                           <i class="fa fa-envelope"></i>
+                              <div> Trámite </div>
+                                                                
+                       </a>
+                       <a href="{{ route('area.index') }}" class="icon-btn">
+                          <i class="fa fa-sitemap"></i>
+                            <div> Areas </div>
+                        </a>
+                        <a href="{{ route('remitente.index') }}" class="icon-btn">
+                           <i class="fa fa-group"></i>
+                              <div> Remitente </div>
+                         </a>
+                         <a href="{{ route('tipo-documentos.index') }}" class="icon-btn">
+                            <i class="fa fa-barcode"></i>
+                            <div> Tipo Documento </div>
+                        </a>
                     </div>
                 </div>
             </div>
