@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Periodo;
-use App\Models\Tipousuario;
+use App\Models\TipoUsuario;
 use App\Models\Usuario;
 use App\Models\TipoDocumento;
 use App\Models\Area;
@@ -91,7 +91,7 @@ class EmitidosController extends Controller
         $tipodocumentos = TipoDocumento::orderBy('nombre_tipoDocumento')
         ->get();
 
-        $tiposUsuarios = Tipousuario::orderBy('descripcion')
+        $tiposUsuarios = TipoUsuario::orderBy('descripcion')
         ->get();
 
         $sql = "SELECT MAX(d.num_recepcion) as num_recepcion from documentos d INNER JOIN periodo p on p.id=d.periodo_id WHERE p.estado";

@@ -37,7 +37,7 @@
                                 onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
                                 <i class="icon-key"></i> Salir </a>
-                            </a>
+                            
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf

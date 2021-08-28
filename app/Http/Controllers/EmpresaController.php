@@ -28,9 +28,9 @@ class EmpresaController extends Controller
                     ->where('nombre_empresa','LIKE','%' .$buscarpor . '%')
                    ->orderBy('id','desc')
                    ->simplePaginate(10);
-                   
+
         return view('organizacion.empresa.index', ['empresas' => $empresas,'buscarpor' => $buscarpor]);
-     
+
     }
 
     /**
@@ -79,9 +79,9 @@ class EmpresaController extends Controller
     {
         $empresa = Empresa::where('id', $id)
             ->first();
-     
+
         return view('organizacion.empresa.editar', compact('empresa'));
-        
+
     }
 
     /**
@@ -107,8 +107,17 @@ class EmpresaController extends Controller
      */
     public function destroy($id)
     {
-        Empresa::where('id', $id)->delete();
 
-        return redirect()->route('empresa.index');
+        $Empresa = Empresa::where('id', $id)->with('documentos')->first();
+
+        if($Empresa){
+            if($Empresa->documentos->isNotEmpty()){
+               return back()->with('status', 'Error! Empresa Pertenece a Un Documento');
+            }
+            $Empresa->delete();
+            return back()->with('status', 'Error! Empresa Pertenece a Un Documento');
+         }else{
+            return back()->withErrors('La categoría no existe');
+         }
     }
 }

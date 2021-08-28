@@ -1,50 +1,24 @@
-@extends('layouts.template')
 
-@section('titlePage', 'Trámite - Usuarios | AFOSECAT San Martín')
-
-@section('content')
-<div class="page-content-wrapper">
-    <div class="page-content">
-        <div class="page-bar">
-            <ul class="page-breadcrumb">
-                <li>
-                    <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-angle-right"></i>
-                </li>
-                <li>
-                    <span>Documentos</span>
-                    <i class="fa fa-angle-right"></i>
-                </li>
-                <li>
-                    <a href="{{ route('usuarios.index') }}">Usuarios</a>
-                </li>
-            </ul>
-        </div>
-        
-        <h1 class="page-title"> Usuarios <small>Registrados en el sistema</small></h1>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="portlet light">
-                    <div class="portlet-title">
-                        <div class="caption">
-                        <i class="icon-folder-alt"></i>
-                            <span class="caption-subject bold uppercase font-blue-madison"> AGREGAR USUARIOS</span>
-                        </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <form role="form" action="{{ route('usuario.guardar') }}" method="POST" class="form-validate">
-                            @csrf
-                            <div class="form-body">
-                                @if ($errors->any())
-                                    <ul class="list-group">
-                                        @foreach ($errors->all() as $error)
-                                        <li class="list-group-item list-group-item-danger"><i class="fas fa-chevron-right"></i> {{ $error }}</li>
-                                        @endforeach
+<div class="modal fade" id="modal-usuario" tabindex="-1" role="dialog" aria-hidden="true">
+     <div class="modal-dialog modal-full">
+         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title"> AGREGAR USUARIO</h4>
+            </div>
+            <form id="FormularioUsuarioCreate">
+                 <div class="modal-body"> 
+                      @csrf
+                 <div class="form-body">
+                     <div class="row" id="alertErrorUsuario" style="display: none;">
+                          <div class="col-12">
+                              <div class="alert alert-danger" role="alert">
+                                    <ul id="listaErroresUsurio">
                                     </ul>
-                                @endif
-
-                                <div class="row">
+                              </div>
+                          </div>
+                     </div>
+                     <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label" for="nombres">Nombres</label>
@@ -58,7 +32,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
@@ -75,7 +48,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label" for="area_id">Areas</label>
-                                            <select name="area_id" id="area_id" class="form-control" required>
+                                            <select name="area_id" class="form-control" required>
                                                 <option value="">[ Areas ]</option>
                                                 @foreach($areas as $area)
                                                 <option value="{{ $area->id }}">{{ $area->nombre_area }}</option>
@@ -83,8 +56,8 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
+                                    </div>
+                                    <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label" for="tipoUsuario_id">Tipo de Usuario</label>
@@ -96,18 +69,14 @@
                                             </select>
                                         </div>
                                     </div>
-
                                 </div>
-                            </div>
-                            <div class="form-actions right">
-                                <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>
-                                <a href="{{ route('documentos.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" class="btn default" data-dismiss="modal"><i class="fas fa-angle-double-left"></i> Cancelar</button>
             </div>
         </div>
-    </div>
+        </form>                                
+    </div>                                 
 </div>
-@endsection

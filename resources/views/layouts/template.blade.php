@@ -22,9 +22,7 @@
         <link href="{{ url('css/backend/layouts/custom.min.css') }}" rel="stylesheet" />
         <link href="{{ url('css/backend/layouts/todo-2.css') }}" rel="stylesheet" />
   
-
         @yield('styles')
-
         <link href="{{ url('css/backend/style.css') }}" rel="stylesheet" />
         
         <link rel="shortcut icon" href="{{ url('storage/images/favicon.png') }}" type="image/png">
@@ -60,24 +58,17 @@
         <script src="{{ url('global/bootstrap/bootstrap.min.js') }}"></script>
         <script src="{{ url('js/backend/layouts/js.cookie.min.js') }}"></script>
         <script src="{{ url('global/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
-
         <script src="{{ url('global/jquery-validation/jquery.validate.min.js') }}"></script>
-
         <script src="{{ url('global/jquery/jquery.blockui.min.js') }}"></script>
-
         <script src="{{ url('global/jquery-validation/messages_es_PE.min.js') }}"></script>
         <script src="{{ url('global/jquery-validation/additional-methods.min.js') }}"></script>
-
         <script src="{{ url('js/backend/layouts/app.min.js') }}"></script>
-     
         <script src="{{ url('js/backend/layouts/layout.min.js') }}"></script>
         <script src="{{ url('js/backend/layouts/demo.min.js') }}"></script>
-        
         <script src="https://kit.fontawesome.com/c80d35621a.js" crossorigin="anonymous"></script>
         
 
         @yield('scripts')
-        <script src="{{ url('js/backend/layouts/ui-modals.min.js') }}"></script>
         <script src="{{ url('js/backend/todo.js') }}"></script>
     </body>
 </html>

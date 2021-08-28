@@ -14,30 +14,30 @@ class RemitenteController extends Controller
     public function __construct(Request $request){
         $this->middleware('auth');
     }
-  
+
     public function index(Request $request)
     {
-        
+
         $buscarpor=$request->get('search');
 
         $remitentes = DB::table('solicitante')
-                   ->select('solicitante.id as id','solicitante.nom_solicitante','solicitante.cargo','dni_ruc','solicitante.cor_solicitante')
+                   ->select('solicitante.id as id','solicitante.nom_solicitante','solicitante.cargo','solicitante.dni_ruc','solicitante.cor_solicitante')
                    ->where('nom_solicitante','LIKE','%' .$buscarpor . '%')
                    ->orderBy('id','desc')
                    ->simplePaginate(10);
-      
+
         //dd($buscarpor);
         return view('organizacion.remitente.index', ['remitentes' => $remitentes,'buscarpor' => $buscarpor]);
-     
+
     }
 
-  
+
     public function create()
     {
         return view('organizacion.remitente.create');
     }
 
-    
+
     public function store(RemitenteRequest $request)
     {
         Remitente::create([
@@ -50,22 +50,22 @@ class RemitenteController extends Controller
         return redirect()->route('remitente.index');
     }
 
-   
+
     public function show($id)
     {
         //
     }
 
-   
+
     public function edit($id)
     {
         $remitente = Remitente::where('id', $id)
         ->first();
- 
+
     return view('organizacion.remitente.editar', compact('remitente'));
     }
 
-  
+
     public function update(Request $request, $id)
     {
         Remitente::find($id)
@@ -78,11 +78,19 @@ class RemitenteController extends Controller
         return redirect()->route('remitente.index');
     }
 
-    
+
     public function destroy($id)
     {
-        Remitente::where('id', $id)->delete();
+        $Remitente = Remitente::where('id', $id)->with('documentos')->first();
 
-        return redirect()->route('remitente.index');
+        if($Remitente){
+            if($Remitente->documentos->isNotEmpty()){
+                return back()->with('status', 'Error! Remitente Pertenece a Un Documento');
+            }
+            $Remitente->delete();
+            return back()->with('mensaje', 'La eliminó exitosamente');
+         }else{
+            return back()->with('status', 'Error! Remitente Pertenece a Un Documento');
+         }
     }
 }

@@ -254,7 +254,7 @@ if (prob) {
         idArea: idArea
       }
     }).then(function (res) {
-      // console.log(res)
+      console.log(res.data.usuarios);
       var fragment = document.createDocumentFragment();
       var option = document.createElement("option");
       option.value = "";
@@ -273,7 +273,7 @@ if (prob) {
           var _option = document.createElement("option");
 
           _option.value = datos.id;
-          _option.textContent = datos.nombres;
+          _option.textContent = datos.apellidos + ', ' + datos.nombres;
           fragment.append(_option);
         }
       } catch (err) {
@@ -304,7 +304,7 @@ $("#solicitante").autocomplete({
         term: request.term
       },
       success: function success(data) {
-        //console.log(data);
+        console.log(data);
         response(data);
       }
     });
@@ -408,6 +408,22 @@ if (remicre) {
   });
 }
 
+var datosRe = document.querySelector(".inputletritas");
+
+if (datosRe) {
+  datosRe.addEventListener("input", function () {
+    validarTextoEntrada(this, "[a-z-ñ ]");
+  });
+}
+
+var datosRemi = document.querySelector(".inputletros");
+
+if (datosRe) {
+  datosRemi.addEventListener("input", function () {
+    validarTextoEntrada(this, "[a-z-ñ ]");
+  });
+}
+
 var nombre = document.querySelector(".inputLetras");
 
 if (nombre) {
@@ -431,7 +447,7 @@ $('#FormularioSolicitanteCreate').on('submit', function (e) {
   e.preventDefault();
   $.ajax({
     type: 'POST',
-    url: '/tramite/solicitantes-modal',
+    url: '/tramite/solicitantes-guardar',
     data: $('#FormularioSolicitanteCreate').serialize(),
     beforeSend: function beforeSend() {
       $("#alertError").show();
@@ -457,92 +473,20 @@ $('#FormularioSolicitanteCreate').on('submit', function (e) {
 $('#btnModalSoli').on('click', function () {
   LimpiarFormulario();
   $("#alertError").hide();
-}); /// fin modal de solicitante en agregar documentos internos o externos ///
-///  modal de usuario en agregar documentos internos o externos ///
-
-$('#FormularioUsuarioCreate').on('submit', function (e) {
-  e.preventDefault();
-  $.ajax({
-    type: 'POST',
-    url: '/tramite/usuario-modal',
-    data: $('#FormularioUsuarioCreate').serialize(),
-    beforeSend: function beforeSend() {
-      $("#alertError").hide();
-      console.log('#alertError');
-    },
-    success: function success(response) {
-      console.log(response); //$("#alertError").hide();
-
-      $('#modalUsuarioCreate').modal('hide');
-      LimpiarFormulario();
-    },
-    error: function error(response) {
-      var errores = response.responseJSON.errors;
-      var msjError = '';
-      Object.values(errores).forEach(function (valor) {
-        msjError += '<li>' + valor[0] + '</li>';
-      });
-      $("#listaUsuarioCreate").html(msjError);
-      $("#alertUsuarioCreate").show();
-    }
-  });
 });
-$('#btnModalUsu').on('click', function () {
-  LimpiarFormulario();
-  $("#alertUsuarioCreate").hide();
-}); /// fin  modal de usuario en agregar documentos internos o externos ///
-
-$('#FormularioSolicitanteModificar').on('submit', function (e) {
-  e.preventDefault();
-  $.ajax({
-    type: 'POST',
-    url: '/tramite/solicitante-modal-modificar',
-    data: $('#FormularioSolicitanteModificar').serialize(),
-    success: function success(response) {
-      console.log(response);
-      $('#modalSoliModificar').modal('hide');
-      LimpiarFormulario(); // alert("guardo satisfactoriamente");
-    },
-    error: function error(response) {
-      var errores = response.responseJSON.errors;
-      var msjError = '';
-      Object.values(errores).forEach(function (valor) {
-        msjError += '<li>' + valor[0] + '</li>';
-      });
-      $("#listaErroresSolicitanteModificar").html(msjError);
-      $("#alertErrorSolicitanteModificar").show();
-    }
-  });
-});
-$('#modalSoliModi').on('click', function () {
-  LimpiarFormulario();
-  $("#alertErrorSolicitanteModificar").hide();
-});
-
-function LimpiarFormulario() {
-  $("#nom_solicitante").val("");
-  $("#cargo").val("");
-  $("#dni_ruc").val("");
-  $("#cor_solicitante").val("");
-  $("#nombres").val("");
-  $("#nombre_empresa").val("");
-  $("#apellidos").val("");
-  $("#nickname").val("");
-  $("#password").val("");
-  $("#correo").val("");
-  $("#area_id").val("");
-  $("#tipoUsuario_id").val("");
-}
-
 $('#FormularioEmpresaCreate').on('submit', function (e) {
   e.preventDefault();
   $.ajax({
     type: 'POST',
-    url: '/tramite/empresa-modal',
+    url: '/tramite/empresa-guardar',
     data: $('#FormularioEmpresaCreate').serialize(),
+    beforeSend: function beforeSend() {
+      $("#alertErrorEmpresa").show();
+      console.log('#alertErrorEmpresa');
+    },
     success: function success(response) {
       console.log(response);
-      $('#modalCreateEmpresa').modal('hide');
+      $('#modal-empresa').modal('hide');
       LimpiarFormulario(); // alert("guardo satisfactoriamente");
     },
     error: function error(response) {
@@ -559,7 +503,53 @@ $('#FormularioEmpresaCreate').on('submit', function (e) {
 $('#btnmodalempre').on('click', function () {
   LimpiarFormulario();
   $("#alertErrorEmpresa").hide();
-}); /// control de documentos
+});
+$('#FormularioUsuarioCreate').on('submit', function (e) {
+  e.preventDefault();
+  $.ajax({
+    type: 'POST',
+    url: '/tramite/usuario-guardar',
+    data: $('#FormularioUsuarioCreate').serialize(),
+    beforeSend: function beforeSend() {
+      $("#alertErrorUsuario").show();
+      console.log('#alertErrorUsuario');
+    },
+    success: function success(response) {
+      console.log(response);
+      $('#modal-usuario').modal('hide');
+      LimpiarFormulario(); // alert("guardo satisfactoriamente");
+    },
+    error: function error(response) {
+      var errores = response.responseJSON.errors;
+      var msjError = '';
+      Object.values(errores).forEach(function (valor) {
+        msjError += '<li>' + valor[0] + '</li>';
+      });
+      $("#listaErroresUsurio").html(msjError);
+      $("#alertErrorUsuario").show();
+    }
+  });
+});
+$('#btnmodalusu').on('click', function () {
+  LimpiarFormulario();
+  $("#alertErrorUsuario").hide();
+});
+
+function LimpiarFormulario() {
+  $("#nom_solicitante").val("");
+  $("#cargo").val("");
+  $("#dni_ruc").val("");
+  $("#cor_solicitante").val("");
+  $("#nombres").val("");
+  $("#nombre_empresa").val("");
+  $("#apellidos").val("");
+  $("#nickname").val("");
+  $("#password").val("");
+  $("#correo").val("");
+  $("#area_id").val("");
+  $("#tipoUsuario_id").val("");
+} /// control de documentos
+
 
 var prueba = document.querySelector(".tipodocumento");
 var tramite = document.querySelector(".tramite");
@@ -576,19 +566,26 @@ if (prueba) {
         tipo_tramite: tipo_tramite
       }
     }).then(function (res) {
-      console.log(res.data.Control);
-      var num = res.data.Control;
-      var input_num = document.querySelector("#micampo");
-      input_num.value = "".concat(num, " - 2021");
+      console.log(res.data.Con);
+
+      if (tipo_tramite == 'EMITIDOS') {
+        var _datos = res.data.Control[0];
+        var input_num = document.querySelector("#micampo");
+        input_num.value = "".concat(parseInt(_datos.num_documentos) + 1, " - 2021");
+        var num_documento = document.querySelector("#num_documento");
+        num_documento.value = "".concat(_datos.nombre_tipoDocumento, "  N\xB0 ").concat(parseInt(_datos.num_documentos) + 1, " - 2021-AFOCAT-AFOSECAT SAN MARTIN");
+      } else {
+        var num = res.data.Con;
+
+        var _input_num = document.querySelector("#micampo");
+
+        _input_num.value = "".concat(num, " - 2021");
+        var tipo = document.querySelector("#num_documento");
+        tipo.value = "-";
+      }
     });
   });
 }
-
-$('.datepicker').datepicker({
-  orientation: 'bottom left',
-  todayHighlight: true,
-  autoclose: true
-});
 
 /***/ }),
 

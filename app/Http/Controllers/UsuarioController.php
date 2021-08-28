@@ -32,7 +32,7 @@ class UsuarioController extends Controller
            ->join('tipo_usuario','tipo_usuario.id','=','usuario.tipoUsuario_id')
            ->where('nombres','LIKE','%' .$buscarpor . '%')
            ->orderBy('id','desc')
-           ->simplePaginate(10);
+           ->simplePaginate(20);
 
         return view('seguridad.usuarios.index', ['usuarios'=> $usuarios,'buscarpor' => $buscarpor]);    
        
@@ -113,7 +113,8 @@ class UsuarioController extends Controller
             ->update([
                 'nombres'   => $request->nombres,
                 'apellidos' => $request->apellidos,
-                'correo'    => $request->correo,
+                'nickname'  => $request->nickname,
+                'password'  => $request->password,
                 'area_id'    => $request->area_id,
                 'tipoUsuario_id' => $request->tipoUsuario_id
             ]);

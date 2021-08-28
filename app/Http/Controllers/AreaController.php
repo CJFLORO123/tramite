@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AreaResquest;
-
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\Area;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\DB;
 
 class AreaController extends Controller
@@ -37,7 +38,7 @@ class AreaController extends Controller
   
     public function store(AreaResquest $request)
     {
-        area::create([
+        Area::create([
             'nombre_area' => $request->nombre_area,
         ]);
 
@@ -70,8 +71,28 @@ class AreaController extends Controller
    
     public function destroy($id)
     {
-        area::where('id', $id)->delete();
+    
+     $usuario = Usuario::find(1);
 
-        return redirect()->route('tipo-documentos.index');
+    
+   
+    $hasTask = Area::has('usuario.area_id')->get();
+    dd($hasTask);
+
+    if($hasTask){
+        return 'hola joven';
+    }else{
+        return 'false';
     }
+ 
+
+
+     return redirect()->route('area.index');
+
+    }
+        
 }
+       
+
+    
+

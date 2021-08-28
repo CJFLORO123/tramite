@@ -24,7 +24,8 @@ class AreaResquest extends FormRequest
     public function rules()
     {
         return [
-            'nombre_area' => 'required|unique:area,nombre_area',
+            'nombre_area' => 'required|string',
+
         ];
     }
 
@@ -32,7 +33,7 @@ class AreaResquest extends FormRequest
     {
     return [
         'nombre_area.unique' => 'Error! Area Registrada',
-        
+
     ];
    }
 

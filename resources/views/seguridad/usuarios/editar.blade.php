@@ -36,25 +36,8 @@
                         <form role="form" action="{{ route('usuarios.update', $usuario->id) }}" method="POST" class="form-validate" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <div class="loading hidden">
-                                <p><i class="fas fa-spinner"></i> Cargando</p>
-                            </div>
-
+                        
                             <div class="form-body">
-                                @if (session('status'))
-                                    <ul class="list-group">
-                                        <li class="list-group-item list-group-item-danger"> {{ session('status') }}</li>
-                                    </ul>
-                                @endif
-
-                                @if ($errors->any())
-                                    <ul class="list-group">
-                                        @foreach ($errors->all() as $error)
-                                        <li class="list-group-item list-group-item-danger"><i class="fas fa-chevron-right"></i> {{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -118,7 +101,7 @@
 
                                 </div>
                             </div>
-                            </div>
+                            
                             <div class="form-actions right">
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Actualizar</button>
                                 <a href="{{ route('usuarios.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>

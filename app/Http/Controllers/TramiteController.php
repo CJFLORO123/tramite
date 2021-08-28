@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\TipoDocumento;
 use App\Models\Documentos;
 
-
 use App\Http\Requests\EmpresaRequest;
 use App\Http\Requests\RemitenteRequest;
 use App\Http\Requests\UsuarioRequest;
@@ -15,7 +14,7 @@ use App\Models\Periodo;
 use App\Models\Privilegio;
 use App\Models\Controldocumentos;
 
-use App\Models\Tipousuario;
+use App\Models\TipoUsuario;
 
 use App\Models\Usuario;
 use App\Models\Area;
@@ -72,7 +71,7 @@ class TramiteController extends Controller
         $tipodocumentos = TipoDocumento::orderBy('nombre_tipoDocumento')
         ->get();
 
-        $tiposUsuarios = Tipousuario::orderBy('descripcion')
+        $tiposUsuarios = TipoUsuario::orderBy('descripcion')
         ->get();
 
         return view('documentos.tramite.create',compact('tipodocumentos', 'areas','now', 'numExpediente','periodo','tiposUsuarios'));
@@ -85,17 +84,16 @@ class TramiteController extends Controller
         if($tipo_tramite == 'RECIBIDOS')
         {
 
-         $sql = "SELECT MAX(cd.num_documentos) as num_documentos , id FROM control_documentos cd WHERE cd.tipoDocumento_id = $request->tipoDocumento_id AND cd.tipo_tramite ='$request->tipo_tramite' GROUP BY id"; 
+         $sql = "SELECT MAX(d.num_recepcion) as num_recepcion from documentos d INNER JOIN periodo p
+         on p.id=d.periodo_id WHERE p.id=periodo_id and d.tipo_tramite='RECIBIDOS'"; 
 
-         $idControl=DB::select("SELECT id FROM control_documentos WHERE tipoDocumento_id = $request->tipoDocumento_id  and tipo_tramite='$request->tipo_tramite'");
+         $solicitante=DB::select("SELECT i.id FROM solicitante i WHERE i.id=1");
 
-         $solicitante=DB::select("SELECT i.id FROM solicitante i WHERE i.id=32");
-
-         $empresaid=DB::select("SELECT i.id FROM empresa i WHERE i.id=7");
+         $empresaid=DB::select("SELECT i.id FROM empresa i WHERE i.id=1");
 
          $r  = DB::select($sql);
 
-         $correlativo = $r[0]->num_documentos + 1;
+         $correlativo = $r[0]->num_recepcion + 1;
 
            if($request->file('adj_documento'))
              {
@@ -118,11 +116,9 @@ class TramiteController extends Controller
 
              $fecha = Carbon::createFromFormat('d/m/Y',$request->fecha_recepcion)->format('Y-m-d');
 
-             //$hora = Carbon::createFromTime($request->hora_recepcion)->format('HH:mm:ss');
-             //$newDate = date("Y-m-d", strtotime(["fechai"]));
              $time = Carbon::parse($request->hora_recepcion)->format('H:i:s');
 
-             //dd($time);
+             //dd($request);
 
              Documentos::create([
                  'num_recepcion'    => $correlativo,
@@ -141,7 +137,6 @@ class TramiteController extends Controller
                  
              ]);
 
-             
              $documento_id = "SELECT MAX(d.id) as id from documentos d INNER JOIN usuario p
              on p.id=d.usuario_id WHERE p.id=" . Auth::id();
 
@@ -157,22 +152,16 @@ class TramiteController extends Controller
              ]);
 
              
-             $r = Controldocumentos::where('id', $idControl[0]->id)
-                  ->update([
-                      'num_documentos' => $correlativo,
-                      'fecha_registro' => $fecha,
-                   ]);
-           
 
         }else{
             
-         $sql = "SELECT MAX(cd.num_documentos) as num_documentos FROM control_documentos cd WHERE cd.tipoDocumento_id = $request->tipoDocumento_id AND cd.tipo_tramite ='$request->tipo_tramite'";
+         $sql = "SELECT MAX(cd.num_documentos) as num_documentos FROM control_documentos cd WHERE cd.tipoDocumento_id = $request->tipoDocumento_id AND cd.tipo_tramite ='EMITIDOS'";
 
-         $idControl=DB::select("SELECT id FROM control_documentos WHERE tipoDocumento_id = $request->tipoDocumento_id  and tipo_tramite='$request->tipo_tramite'");
+         $idControl=DB::select("SELECT id FROM control_documentos WHERE tipoDocumento_id = $request->tipoDocumento_id  and tipo_tramite='EMITIDOS'");
 
-         $solicitante=DB::select("SELECT i.id FROM solicitante i WHERE i.id=32");
+         $solicitante=DB::select("SELECT i.id FROM solicitante i WHERE i.id=1");
 
-         $empresaid=DB::select("SELECT i.id FROM empresa i WHERE i.id=7");
+         $empresaid=DB::select("SELECT i.id FROM empresa i WHERE i.id=1");
 
          //dd($idControl[0]->id);
 
@@ -209,6 +198,8 @@ class TramiteController extends Controller
                          'tipo_tramite'     => $request->tipo_tramite,
                      ]);
 
+               
+
                      $documento = "SELECT MAX(d.id) as id from documentos d INNER JOIN usuario p
                      on p.id=d.usuario_id WHERE p.id=". $request->usuario_id;
 
@@ -216,6 +207,7 @@ class TramiteController extends Controller
 
                      $documento_id = $r[0]->id;
 
+                    // dd($documento_id);
                      //$usuario_id= $request->usuario_id;
 
                      $r = DB::table('situacion')->insert([
@@ -231,6 +223,8 @@ class TramiteController extends Controller
                                 'num_documentos' => $correlativo,
                                 'fecha_registro'   => $fecha,
                                  ]);
+
+         
            
              }
 
@@ -244,6 +238,8 @@ class TramiteController extends Controller
         $id_documento = DB::select("SELECT d.id,d.num_recepcion,p.anio, CASE WHEN so.nom_solicitante IS NULL THEN '--' ELSE so.nom_solicitante END AS nom_solicitante, CASE WHEN so.dni_ruc IS NULL THEN '-- --' ELSE so.dni_ruc END AS dni_ruc, CASE WHEN so.cargo IS NULL THEN '--' ELSE so.cargo END AS cargo,
         CASE WHEN so.cor_solicitante IS NULL THEN '-- --' ELSE so.cor_solicitante END AS cor_solicitante,td.nombre_tipoDocumento,d.num_documento,DATE_FORMAT(d.fecha_recepcion, '%d/%m/%Y') AS fecha_recepcion,TIME_FORMAT(d.hora_recepcion, '%h:%i %p') AS hora_recepcion,d.asunto, d.detalle,d.adj_documento FROM documentos d inner join periodo p on d.periodo_id=p.id LEFT JOIN solicitante so on d.solicitante_id=so.id  INNER JOIN tipodocumento td on td.id=d.tipoDocumento_id where d.id=".$id);
 
+        //dd($id_documento);
+        
         return view('detalle-documento/index', compact('id_documento'));
     }
 
@@ -265,7 +261,7 @@ class TramiteController extends Controller
         $tipodocumentos = TipoDocumento::orderBy('nombre_tipoDocumento')
         ->get();
 
-        $tiposUsuarios = Tipousuario::orderBy('descripcion')
+        $tiposUsuarios = TipoUsuario::orderBy('descripcion')
         ->get();
 
         $sql = "SELECT MAX(d.num_recepcion) as num_recepcion from documentos d INNER JOIN periodo p on p.id=d.periodo_id WHERE p.estado";
@@ -318,11 +314,7 @@ class TramiteController extends Controller
     }
 
 
-  // Modal solicitante //
-    public function CrearSolucitante()
-    {
-        return view('documentos.tramite.modal-remitente');
-    }
+  // Modal remitente //
 
     public function GuardarSolicitante(RemitenteRequest $request)
     {
@@ -337,14 +329,7 @@ class TramiteController extends Controller
         return redirect()->route('documentos.create');
 
     } 
- // fin Modal solicitante //
 
-
- // Modal empresa //
- public function CrearEmpresa()
- {
-     return view('documentos.tramite.modal-empresa');
- }
 
  public function GuardarEmpresa(EmpresaRequest $request)
  {
@@ -353,27 +338,15 @@ class TramiteController extends Controller
         'nombre_empresa' => $request->nombre_empresa,
     ]);
 
-    
-     return redirect()->route('documentos.create');
-
  } 
 // fin Modal solicitante //
 
+
  // Modal Usuario //
- public function CrearUsuario()
- {
-    $tipos = Tipousuario::orderBy('descripcion')
-    ->get();
-
-   $areas = Area::orderBy('nombre_area')
-    ->get();
-
-     return view('documentos.tramite.modal-usuario', compact('tipos','areas'));
- }
 
  public function GuardarUsuario(UsuarioRequest $request)
  {
-     
+       
     $usuario = Usuario::create([
         'nombres'   => $request->nombres,
         'apellidos' => $request->apellidos,
@@ -383,7 +356,7 @@ class TramiteController extends Controller
         'area_id' => $request->area_id
     ]);
 
-$tipos = Tipousuario::where('id', $request->tipoUsuario_id)
+$tipos = TipoUsuario::where('id', $request->tipoUsuario_id)
     ->first();
 
 $accesos = explode(',', $tipos->accesos);
@@ -394,11 +367,8 @@ foreach($accesos as $acceso){
         'menu_id' => $acceso 
     ]);
 }
-    
-     return redirect()->route('documentos.create');
-
- } 
-// fin Modal solicitante //
+} 
+// fin Modal Usuario //
 
   
     public function destroy($id)

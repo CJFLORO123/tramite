@@ -26,7 +26,7 @@ class Usuario extends Authenticatable
     }
 
     public function area(){
-        return $this->belongsTo(area::class, 'area_id', 'id');
+        return $this->belongsTo(Area::class, 'area_id', 'id');
     }
 
     public function privilegios(){

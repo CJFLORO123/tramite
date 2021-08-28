@@ -1,67 +1,38 @@
-@extends('layouts.template')
 
-@section('titlePage', 'Trámite - Empresa | AFOSECAT San Martín')
-
-@section('content')
-<div class="page-content-wrapper">
-    <div class="page-content">
-        <div class="page-bar">
-            <ul class="page-breadcrumb">
-                <li>
-                    <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-angle-right"></i>
-                </li>
-                <li>
-                    <span>Documentos</span>
-                    <i class="fa fa-angle-right"></i>
-                </li>
-                <li>
-                    <a href="{{ route('empresa.index') }}">Empresa</a>
-                </li>
-            </ul>
-        </div>
-        
-        <h1 class="page-title"> Empresa <small>Registrados en el sistema</small></h1>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="portlet light">
-                    <div class="portlet-title">
-                        <div class="caption">
-                        <i class="icon-folder-alt"></i>
-                            <span class="caption-subject bold uppercase font-blue-madison"> AGREGAR EMPRESA</span>
-                        </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <form role="form" action="{{ route('empresa.guardar') }}" method="POST" class="form-validate">
-                            @csrf
-                            <div class="form-body">
-                                @if ($errors->any())
-                                    <ul class="list-group">
-                                        @foreach ($errors->all() as $error)
-                                        <li class="list-group-item list-group-item-danger"><i class="fas fa-chevron-right"></i> {{ $error }}</li>
-                                        @endforeach
+<div class="modal fade" id="modal-empresa" tabindex="-1" role="dialog" aria-hidden="true">
+     <div class="modal-dialog modal-full">
+         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title"> AGREGAR EMPRESA</h4>
+            </div>
+            <form id="FormularioEmpresaCreate">
+                 <div class="modal-body"> 
+                      @csrf
+                 <div class="form-body">
+                     <div class="row" id="alertErrorEmpresa" style="display: none;">
+                          <div class="col-12">
+                              <div class="alert alert-danger" role="alert">
+                                    <ul id="listaErroresEmpresa">
                                     </ul>
-                                @endif
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="control-label" for="nombre_empresa">Nombre De Empresa</label>
-                                                <input type="text" class="form-control inputLetras" id="nombre_empresa" name="nombre_empresa" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                        </div>
-                                    </div>
-                                
+                              </div>
+                          </div>
+                     </div>
+                      <div class="row">
+                           <div class="col-md-12">
+                                <div class="form-group">
+                                     <label class="control-label" for="nombre_empresa">Nombre De Empresas</label>
+                                     <input type="text" class="form-control inputletritas" id="nombre_empresa" name="nombre_empresa" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                </div>
                             </div>
-                            <div class="form-actions right">
-                                <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>
-                                <a href="{{ route('documentos.index') }}" class="btn default"><i class="fas fa-angle-double-left"></i> Cancelar</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                      </div>
+                     
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" class="btn default" data-dismiss="modal"><i class="fas fa-angle-double-left"></i> Cancelar</button>
             </div>
         </div>
-    </div>
+        </form>                                
+    </div>                                 
 </div>
-@endsection

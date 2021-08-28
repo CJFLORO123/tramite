@@ -11,7 +11,7 @@ class Documentos extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'num_recepcion', 'fecha_recepcion', 'hora_recepcion', 'num_documento', 'asunto','detalle', 'adj_documento','tipoDocumento_id','periodo_id','solicitante_id','usuario_id','empresa_id','tipo_tramite'
+        'num_recepcion', 'fecha_recepcion', 'hora_recepcion', 'num_documento', 'asunto','detalle', 'adj_documento','tipoDocumento_id','periodo_id','remitente_id','usuario_id','empresa_id','tipo_tramite'
     ];
 
     public function tipodocumento(){
@@ -23,7 +23,7 @@ class Documentos extends Model
     }
 
     public function remitente(){
-        return $this->belongsTo(Remitente::class, 'solicitante_id', 'id');
+        return $this->belongsTo(Remitente::class, 'remitente_id', 'id');
     }
 
     public function usuario(){

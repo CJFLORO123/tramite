@@ -15,11 +15,11 @@
             <ul class="page-breadcrumb">
                 <li>
                     <a href="{{ route('inicio') }}">Panel Principal</a>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <span>Documentos</span>
-                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
                     <a href="{{ route('documentos.index') }}">Trámite</a>
@@ -55,13 +55,13 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="Registro" class="control-label">N° Registro</label>
-                                            <input type="text" class="form-control text-center"  id="micampo" autocomplete="off" readonly>
+                                            <input type="text" class="form-control text-center"  id="micampo" autocomplete="off"  readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="fecha_recepcion" class="control-label">Fecha Registro</label>
-                                            <input type="text" id="fecha_recepcion" name="fecha_recepcion" class="form-control text-center date-picker data-required" autocomplete="off" placeholder="Ejem. <?php echo date('d/m/Y')?>" required>
+                                            <input type="text" id="fecha_recepcion" name="fecha_recepcion" class="form-control text-center date-picker data-required" autocomplete="off" placeholder="Ejem. <?php echo date('d/m/Y')?>" required value="<?php echo date('d/m/Y')?>">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -89,9 +89,9 @@
                                                  <div class="form-group">
                                                       <label for="solicitante" class="control-label">Remitente</label>
                                                       <div class="input-group">
-                                                      <input type="text" id="solicitante" name="solicitante" class="form-control input-recibidos inputLetras" autocomplete="off" placeholder="Buscar Remitente" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                                      <div class="input-group-btn">
-                                                      <a href="{{ route('remitente.crear') }}" class="btn btn-danger"><i class="fa fa-plus"></i></a>
+                                                      <input type="text" id="solicitante" name="solicitante" class="form-control input-recibidos inputLetras" autocomplete="off" placeholder="Buscar Remitente" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                                      <div class="input-group-btn" id="btnModalSoli">
+                                                      <a class="btn btn-danger" data-toggle="modal" href="#modal-remitente"><i class="fa fa-plus"></i></a>
                                                      </div>
                                                      </div>
                                                 </div>
@@ -117,8 +117,8 @@
                                                  <select class="form-control input-emitidos usuario" name="usuario_id" required>
                                                  <option value="">[ USUARIO ]</option>
                                                  </select>
-                                                        <span class="input-group-btn">
-                                                            <a href="{{ route('usuario.crear') }}" class="btn btn-danger" ><i class="fa fa-plus"></i></a>
+                                                        <span class="input-group-btn" id="btnmodalusu">
+                                                        <a class="btn btn-danger" data-toggle="modal" href="#modal-usuario"><i class="fa fa-plus"></i></a>
                                                         </span>
                                                 </div>
                                                     <!-- /input-group -->
@@ -126,11 +126,11 @@
                                        </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="empresa" class="control-label">Empresa</label>
+                                            <label for="empresa" class="control-label">Empresa o Institución</label>
                                             <div class="input-group">
-                                                <input type="text" id="empresa" name="empresa" class="form-control input-juridico inputValida" autocomplete="off" placeholder="Buscar Empresa" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                                <div class="input-group-btn">
-                                                    <a href="{{ route('empresa.crear') }}" class="btn btn-danger" ><i class="fa fa-plus"></i></a>
+                                                <input type="text" id="empresa" name="empresa" class="form-control input-juridico inputValida" autocomplete="off" placeholder="Buscar Empresa" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                                <div class="input-group-btn" id="btnmodalempre">
+                                                <a class="btn btn-danger" data-toggle="modal" href="#modal-empresa"><i class="fa fa-plus"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,20 +154,20 @@
                                 <div class="col-md-10">
                                         <div class="form-group">
                                             <label for="num_documento" class="control-label">N° De Documento </label>
-                                            <input type="text" id="num_documento" name="num_documento" class="form-control" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input type="text" id="num_documento" name="num_documento" class="form-control" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" value="-">
                                         </div>
                                     </div>
                                     
                                  <div class="col-md-12">
                                       <div class="form-group">
                                             <label for="asunto" class="control-label">Asunto</label>
-                                            <input type="text" id="asunto" name="asunto" class="form-control" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input type="text" id="asunto" name="asunto" class="form-control" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
                                         </div>
                                     </div> 
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="detalle" class="control-label">Detalle</label>
-                                            <textarea id="detalle" name="detalle" class="form-control" rows="5" onkeyup="javascript:this.value=this.value.toUpperCase();" required></textarea>
+                                            <textarea id="detalle" name="detalle" class="form-control" rows="5" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
                                         </div>
                                     </div>  
                           </div>
@@ -189,18 +189,18 @@
                 </div>
                 
             </div>
-     
+       @include('documentos.tramite.modal-remitente')
         </div>
-     
+      @include('documentos.tramite.modal-empresa')
     </div>
- 
+ @include('documentos.tramite.modal-usuario')
 </div>
 @endsection
 
 @section('scripts')
 <script  src="{{ url('global/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 <script  src="{{ url('global/bootstrap-datetimepicker/bootstrap-timepicker.min.js') }}"></script>
-<script  src="{{ url('global/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ url('js/backend/layouts/layout.min.js') }}"></script>
 <script  src="{{ url('global/bootstrap-datetimepicker/components-date-time-pickers.min.js') }}"></script>
 <script async src="{{ url('global/axios/axios.min.js') }}"></script>
 @endsection

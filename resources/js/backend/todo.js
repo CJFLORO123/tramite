@@ -162,7 +162,8 @@ if (prob) {
                 idArea: idArea
             }
         }).then(res => {
-           // console.log(res)
+
+            console.log(res.data.usuarios)
             const fragment = document.createDocumentFragment();
 
             const option = document.createElement("option");
@@ -177,7 +178,8 @@ if (prob) {
                 // Creacion del select de Distritos
                 const option = document.createElement("option");
                 option.value = datos.id;
-                option.textContent = datos.nombres;
+                option.textContent = datos.apellidos + ', ' + datos.nombres;
+               
 
                 fragment.append(option);
             }
@@ -208,7 +210,7 @@ $("#solicitante").autocomplete({
                 term: request.term
             },
             success: function (data) {
-                //console.log(data);
+                console.log(data);
                
                 response(data);
             }
@@ -318,6 +320,27 @@ remicre.addEventListener("input", function() {
 });
 }
 
+
+const datosRe = document.querySelector(".inputletritas");
+
+if(datosRe){
+    datosRe.addEventListener("input", function() {
+   
+    validarTextoEntrada(this, "[a-z-ñ ]") 
+
+});
+}
+
+const datosRemi = document.querySelector(".inputletros");
+
+if(datosRe){
+    datosRemi.addEventListener("input", function() {
+   
+    validarTextoEntrada(this, "[a-z-ñ ]") 
+
+});
+}
+
 const nombre = document.querySelector(".inputLetras");
 if(nombre){
 nombre.addEventListener("input", function() {
@@ -339,8 +362,6 @@ numero.addEventListener("input", function() {
 }  // 
 
     
-
- 
     // FIN VALIDACIONES DE LETRAS Y NUMEROS //
 
 /// modal de solicitante en agregar documentos internos o externos ///
@@ -349,7 +370,7 @@ numero.addEventListener("input", function() {
  
         $.ajax({
              type: 'POST',
-             url: '/tramite/solicitantes-modal',
+             url: '/tramite/solicitantes-guardar',
              data: $('#FormularioSolicitanteCreate').serialize(),
              beforeSend: function() {
                  $("#alertError").show ();
@@ -380,83 +401,85 @@ numero.addEventListener("input", function() {
         $("#alertError").hide();
       })
 
-    
- /// fin modal de solicitante en agregar documentos internos o externos ///
-
-///  modal de usuario en agregar documentos internos o externos ///
-
- $('#FormularioUsuarioCreate').on('submit', function(e){
+$('#FormularioEmpresaCreate').on('submit', function(e){
     e.preventDefault();
 
     $.ajax({
          type: 'POST',
-         url: '/tramite/usuario-modal',
-         data: $('#FormularioUsuarioCreate').serialize(),
+         url: '/tramite/empresa-guardar',
+         data: $('#FormularioEmpresaCreate').serialize(),
          beforeSend: function() {
-             $("#alertError").hide ();
-             console.log('#alertError');
-           },
+                 $("#alertErrorEmpresa").show ();
+                 console.log('#alertErrorEmpresa');
+               },
+        
          success: function (response) {
-             console.log(response)
-             //$("#alertError").hide();
-             $('#modalUsuarioCreate').modal('hide')
-             LimpiarFormulario();
+             console.log(response);
 
+             $('#modal-empresa').modal('hide')
+             LimpiarFormulario();
+           // alert("guardo satisfactoriamente");
          },
          error: function(response){
-             let errores = response.responseJSON.errors;
-             let msjError = '';
-             Object.values(errores).forEach(function (valor){
-                 msjError += '<li>'+valor[0]+'</li>';
-             });
+            let errores = response.responseJSON.errors;
+            let msjError = '';
+            Object.values(errores).forEach(function (valor){
+                msjError += '<li>'+valor[0]+'</li>';
+            });
 
-           $("#listaUsuarioCreate").html(msjError);
-           $("#alertUsuarioCreate").show();  
-         },
+          $("#listaErroresEmpresa").html(msjError);
+          $("#alertErrorEmpresa").show();  
+        },
     });
 });
 
 
-$('#btnModalUsu').on('click', function(){
+
+$('#btnmodalempre').on('click', function(){
     LimpiarFormulario();
-    $("#alertUsuarioCreate").hide();
+    $("#alertErrorEmpresa").hide();
   })
 
-/// fin  modal de usuario en agregar documentos internos o externos ///
 
-        $('#FormularioSolicitanteModificar').on('submit', function(e){
-            e.preventDefault();
-     
-            $.ajax({
-                 type: 'POST',
-                 url: '/tramite/solicitante-modal-modificar',
-                 data: $('#FormularioSolicitanteModificar').serialize(),
-                 
-                 success: function (response) {
-                     console.log(response);
+    
+  $('#FormularioUsuarioCreate').on('submit', function(e){
+    e.preventDefault();
 
-                     $('#modalSoliModificar').modal('hide')
-                     LimpiarFormulario();
-                   // alert("guardo satisfactoriamente");
-                 },
-                 error: function(response){
-                    let errores = response.responseJSON.errors;
-                    let msjError = '';
-                    Object.values(errores).forEach(function (valor){
-                        msjError += '<li>'+valor[0]+'</li>';
-                    });
+    $.ajax({
+         type: 'POST',
+         url: '/tramite/usuario-guardar',
+         data: $('#FormularioUsuarioCreate').serialize(),
+         beforeSend: function() {
+                 $("#alertErrorUsuario").show ();
+                 console.log('#alertErrorUsuario');
+               },
+        
+         success: function (response) {
+             console.log(response);
 
-                  $("#listaErroresSolicitanteModificar").html(msjError);
-                  $("#alertErrorSolicitanteModificar").show();  
-                },
+             $('#modal-usuario').modal('hide')
+             LimpiarFormulario();
+           // alert("guardo satisfactoriamente");
+         },
+         error: function(response){
+            let errores = response.responseJSON.errors;
+            let msjError = '';
+            Object.values(errores).forEach(function (valor){
+                msjError += '<li>'+valor[0]+'</li>';
             });
-        });
 
-        $('#modalSoliModi').on('click', function(){
-            LimpiarFormulario();
-            $("#alertErrorSolicitanteModificar").hide();
-          })
-                   
+          $("#listaErroresUsurio").html(msjError);
+          $("#alertErrorUsuario").show();  
+        },
+    });
+});                 
+
+$('#btnmodalusu').on('click', function(){
+    LimpiarFormulario();
+    $("#alertErrorUsuario").hide();
+  })
+
+
 
 function LimpiarFormulario() {
     $("#nom_solicitante").val("");
@@ -474,39 +497,7 @@ function LimpiarFormulario() {
 }
 
 
-$('#FormularioEmpresaCreate').on('submit', function(e){
-    e.preventDefault();
 
-    $.ajax({
-         type: 'POST',
-         url: '/tramite/empresa-modal',
-         data: $('#FormularioEmpresaCreate').serialize(),
-         
-         success: function (response) {
-             console.log(response);
-
-             $('#modalCreateEmpresa').modal('hide')
-             LimpiarFormulario();
-           // alert("guardo satisfactoriamente");
-         },
-         error: function(response){
-            let errores = response.responseJSON.errors;
-            let msjError = '';
-            Object.values(errores).forEach(function (valor){
-                msjError += '<li>'+valor[0]+'</li>';
-            });
-
-          $("#listaErroresEmpresa").html(msjError);
-          $("#alertErrorEmpresa").show();  
-        },
-    });
-});
-
-$('#btnmodalempre').on('click', function(){
-    LimpiarFormulario();
-    $("#alertErrorEmpresa").hide();
-  })
-    
 
   /// control de documentos
 const prueba = document.querySelector(".tipodocumento");
@@ -517,7 +508,6 @@ if (prueba) {
     prueba.addEventListener("change", e => {
         
         const tipoDocumento_id = e.target.value;
-
         const tipo_tramite = tramite.value;
 
         axios({
@@ -525,26 +515,40 @@ if (prueba) {
             url: "/filterTipoTramite",
             data: {
                 tipoDocumento_id: tipoDocumento_id,
-                tipo_tramite: tipo_tramite
+                tipo_tramite: tipo_tramite,
             }
         }).then(res => {
 
-          console.log(res.data.Control);
+          console.log(res.data.Con);
+        if(tipo_tramite == 'EMITIDOS'){
 
-           let num=res.data.Control
+           let datos=res.data.Control[0]
            
            let input_num = document.querySelector("#micampo");
+        
+           input_num.value=`${parseInt(datos.num_documentos) + 1} - 2021`
 
-           input_num.value=`${num} - 2021`
-            
+           let num_documento = document.querySelector("#num_documento");
+           
+          
+           num_documento.value= `${datos.nombre_tipoDocumento}  N° ${parseInt(datos.num_documentos) + 1} - 2021-AFOCAT-AFOSECAT SAN MARTIN`
+
+        }else{
+
+        let num=res.data.Con
+           
+        let input_num = document.querySelector("#micampo");
+
+        input_num.value=`${num} - 2021`
+
+        let tipo = document.querySelector("#num_documento");
+
+        tipo.value= `-`
+
+        }
+           
           });
        });
 
     }  
 
-    $('.datepicker').datepicker({
-        orientation: 'bottom left',
-        todayHighlight: true,
-        autoclose: true,
-        
-    })

@@ -20,7 +20,7 @@
                 </li>
             </ul>
         </div>
-        
+
         <h1 class="page-title"> Areas <small>Registrados en el sistema</small></h1>
 
         <div class="row">
@@ -36,23 +36,23 @@
                         <form role="form" action="{{ route('area.store') }}" method="POST" class="form-validate">
                             @csrf
                             <div class="form-body">
-                               
+
                                 @if ($errors->any())
                                     <ul class="list-group">
                                         @foreach ($errors->all() as $error)
                                         <li class="list-group-item list-group-item-danger"><i class="fas fa-chevron-right"></i> {{ $error }}</li>
                                         @endforeach
                                     </ul>
-                                @endif 
+                                @endif
 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label" for="nombre_area">Nombre De Areas</label>
-                                                <input type="text" class="form-control inputValida" id="nombre_area" name="nombre_area" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                                <input type="text" class="form-control" id="nombre_area" name="nombre_area" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                         </div>
                                     </div>
-                                
+
                             </div>
                             <div class="form-actions right">
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-save"></i> Guardar</button>

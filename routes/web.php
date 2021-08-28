@@ -2,16 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,7 +14,7 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('ingresar');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-//Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeControllerRUN@index')->name('home');
 
 Route::get('tramite/inicio', 'InicioController@index')->name('inicio');
 
@@ -32,12 +23,11 @@ Route::resource('tramite/usuarios', 'UsuarioController');
 Route::resource('tramite/documentos', 'TramiteController');
 
 //modal-remitente inicio//
-Route::get('tramite/solicitantes-create', 'TramiteController@CrearSolucitante')->name('remitente.crear');
 Route::post('tramite/solicitantes-guardar', 'TramiteController@GuardarSolicitante')->name('remitente.guardar');
+
 //modal-remitente fin//
 
 //modal-empresa inicio//
-Route::get('tramite/empresa-create', 'TramiteController@CrearEmpresa')->name('empresa.crear');
 Route::post('tramite/empresa-guardar', 'TramiteController@GuardarEmpresa')->name('empresa.guardar');
 //modal-empresa fin//
 

@@ -20,7 +20,7 @@
                 </li>
             </ul>
         </div>
-        
+
         <h1 class="page-title"> Empresa <small>Registrados en el sistema</small></h1>
 
         <div class="row">
@@ -37,6 +37,11 @@
                         </div>
                     </div>
                     <div class="portlet-body">
+                        @if (session('status'))
+                           <div class="alert alert-danger" role="alert">
+                               {{ session('status') }}
+                           </div>
+                       @endif
                     <form role="form">
                         <div class="row">
                             <div class="col-md-6">

@@ -45,13 +45,6 @@ class TipodocumentoController extends Controller
 
         $tipoDocumento_id=$tipo->id;
 
-         Controldocumentos::create([
-            'num_documentos' => 0,
-            'tipo_tramite' => 'RECIBIDOS',
-            'tipoDocumento_id' => $tipoDocumento_id,
-            'fecha_registro' => date("Y-m-d"),
-        ]);
-
         Controldocumentos::create([
             'num_documentos' => 0,
             'tipo_tramite' => 'EMITIDOS',

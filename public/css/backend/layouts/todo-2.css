@@ -4,8 +4,8 @@ TODO Page
 /* Cubic Bezier Transition */
 .todo-sidebar {
   float: left;
-  width: 230px;
-  margin-right: 20px; }
+  width: 200px;
+  margin-right: 15px; }
 
 .todo-content {
   overflow: hidden; }

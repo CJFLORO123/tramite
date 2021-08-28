@@ -22,6 +22,7 @@ class UsuarioRequest extends FormRequest
         return [
             'nombres' => 'required|unique:usuario,nombres',
             'apellidos' => 'required|unique:usuario,apellidos',
+            
         ];
     }
 
